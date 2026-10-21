@@ -972,6 +972,423 @@
       margin-top: 2px;
     }
 
+    /* =========================================================================
+       5TH GAME: MEMORY MATCH (SINGLE-PLAYER & 2-PLAYER LOCAL MULTIPLAYER)
+       ========================================================================= */
+    #memory-match-screen {
+      display: none;
+      width: 100%;
+      max-width: 460px;
+      padding: 6px 10px 14px 10px;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: fadeIn 0.22s ease-out;
+    }
+
+    /* SINGLE-PLAYER STATS BAR */
+    .memory-match-stats-bar {
+      width: 100%;
+      background: #111c38;
+      border: 2px solid #1e2e54;
+      border-radius: 16px;
+      padding: 8px 12px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    }
+    .memory-match-stat-item {
+      background: #0a1124;
+      border-radius: 10px;
+      padding: 4px 2px;
+      border: 1px solid #1e293b;
+    }
+    .memory-match-stat-label {
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+    .memory-match-stat-val {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: #facc15;
+    }
+
+    /* 2-PLAYER MULTIPLAYER SCOREBOARD & TURN PANELS */
+    .memory-match-2p-scoreboard {
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .memory-match-2p-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      width: 100%;
+    }
+    .memory-match-player-panel {
+      background: #111c38;
+      border: 2px solid #1e293b;
+      border-radius: 14px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .memory-match-player-panel.p1-panel { border-color: rgba(56, 189, 248, 0.35); }
+    .memory-match-player-panel.p2-panel { border-color: rgba(244, 63, 94, 0.35); }
+
+    .memory-match-player-panel.active-turn {
+      transform: scale(1.03);
+    }
+    .memory-match-player-panel.p1-panel.active-turn {
+      border-color: #38bdf8;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.55), 0 4px 12px rgba(0, 0, 0, 0.6);
+      animation: pulsePlayerP1 1s infinite alternate;
+    }
+    .memory-match-player-panel.p2-panel.active-turn {
+      border-color: #f43f5e;
+      box-shadow: 0 0 16px rgba(244, 63, 94, 0.55), 0 4px 12px rgba(0, 0, 0, 0.6);
+      animation: pulsePlayerP2 1s infinite alternate;
+    }
+    @keyframes pulsePlayerP1 {
+      from { box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
+      to { box-shadow: 0 0 20px rgba(56, 189, 248, 0.8); }
+    }
+    @keyframes pulsePlayerP2 {
+      from { box-shadow: 0 0 10px rgba(244, 63, 94, 0.4); }
+      to { box-shadow: 0 0 20px rgba(244, 63, 94, 0.8); }
+    }
+
+    .memory-match-p-badge {
+      font-size: 0.65rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      padding: 2px 8px;
+      border-radius: 8px;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+    }
+    .p1-badge { background: rgba(56, 189, 248, 0.16); color: #38bdf8; }
+    .p2-badge { background: rgba(244, 63, 94, 0.16); color: #f43f5e; }
+
+    .memory-match-p-score {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #f8fafc;
+      line-height: 1.1;
+    }
+    .memory-match-p-moves {
+      font-size: 0.65rem;
+      color: #94a3b8;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+    .memory-match-p-turn-tag {
+      font-size: 0.62rem;
+      font-weight: 900;
+      margin-top: 4px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      visibility: hidden;
+    }
+    .memory-match-player-panel.active-turn .memory-match-p-turn-tag {
+      visibility: visible;
+    }
+    .p1-panel .memory-match-p-turn-tag { background: #0284c7; color: #fff; }
+    .p2-panel .memory-match-p-turn-tag { background: #e11d48; color: #fff; }
+
+    .memory-match-2p-subbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 6px 12px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: #94a3b8;
+    }
+    .memory-match-2p-subbar span b { color: #facc15; }
+
+    .memory-match-turn-banner {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 7px 10px;
+      text-align: center;
+      font-size: 0.84rem;
+      font-weight: 900;
+      color: #38bdf8;
+      display: none;
+    }
+
+    .memory-match-diff-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 6px 8px;
+      gap: 6px;
+    }
+    .memory-match-diff-btn {
+      flex: 1;
+      padding: 6px 4px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      font-size: 0.72rem;
+      font-weight: 800;
+      background: #1e293b;
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .memory-match-diff-btn.active {
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      border-color: #38bdf8;
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+    }
+    .memory-match-grid-wrap {
+      width: 100%;
+      max-width: 440px;
+      background: #0c142b;
+      border: 3px solid #1e293b;
+      border-radius: 20px;
+      padding: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+      min-height: 330px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .memory-match-grid {
+      width: 100%;
+      display: grid;
+      gap: 8px;
+      justify-content: center;
+      align-content: center;
+    }
+    .memory-match-grid.diff-easy {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+    }
+    .memory-match-grid.diff-medium {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+    }
+    .memory-match-grid.diff-hard {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+    }
+    .memory-match-card {
+      aspect-ratio: 1 / 1;
+      perspective: 800px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      border-radius: 14px;
+      position: relative;
+    }
+    .memory-match-card-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border-radius: 14px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    .memory-match-card.is-flipped .memory-match-card-inner,
+    .memory-match-card.is-matched .memory-match-card-inner {
+      transform: rotateY(180deg);
+    }
+    .memory-match-face {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+    .memory-match-front {
+      background: linear-gradient(145deg, #1e1b4b, #0f172a);
+      border: 2px solid rgba(139, 92, 246, 0.4);
+      color: #facc15;
+      font-size: 1.5rem;
+      font-weight: 900;
+      box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .memory-match-front::after {
+      content: "✦";
+      position: absolute;
+      font-size: 0.65rem;
+      color: rgba(56, 189, 248, 0.5);
+      top: 4px;
+      right: 6px;
+    }
+    .memory-match-back {
+      background: linear-gradient(145deg, #ffffff, #f1f5f9);
+      border: 3px solid #38bdf8;
+      transform: rotateY(180deg);
+      font-size: 2.1rem;
+      box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.3);
+    }
+    .memory-match-card.diff-hard .memory-match-back {
+      font-size: 1.75rem;
+    }
+    .memory-match-card.is-matched .memory-match-back {
+      border-color: #22c55e;
+      background: linear-gradient(145deg, #f0fdf4, #dcfce7);
+      animation: matchSuccessPop 0.45s ease-out;
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.6);
+    }
+    .memory-match-card.matched-p1 .memory-match-back {
+      border-color: #38bdf8;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.7);
+    }
+    .memory-match-card.matched-p2 .memory-match-back {
+      border-color: #f43f5e;
+      box-shadow: 0 0 14px rgba(244, 63, 94, 0.7);
+    }
+    .memory-match-card.mismatch-shake .memory-match-card-inner {
+      animation: mismatchWiggle 0.4s ease-in-out;
+    }
+    @keyframes mismatchWiggle {
+      0%, 100% { transform: rotateY(180deg) translateX(0); }
+      20% { transform: rotateY(180deg) translateX(-6px); }
+      40% { transform: rotateY(180deg) translateX(6px); }
+      60% { transform: rotateY(180deg) translateX(-4px); }
+      80% { transform: rotateY(180deg) translateX(4px); }
+    }
+    @keyframes matchSuccessPop {
+      0% { transform: rotateY(180deg) scale(0.9); }
+      50% { transform: rotateY(180deg) scale(1.12); }
+      100% { transform: rotateY(180deg) scale(1); }
+    }
+    .memory-match-actions-row {
+      width: 100%;
+      max-width: 440px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* MEMORY MATCH MODE SELECTION MODAL */
+    #memory-match-mode-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      z-index: 110;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .memory-match-mode-box {
+      background: #0f172a;
+      border: 2px solid #a855f7;
+      box-shadow: 0 0 32px rgba(168, 85, 247, 0.4);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 360px;
+      padding: 22px 18px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      animation: splashReveal 0.3s ease-out;
+    }
+    .memory-match-mode-box h3 {
+      font-size: 1.35rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #38bdf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .memory-match-mode-box p {
+      font-size: 0.76rem;
+      color: #94a3b8;
+      margin-top: -8px;
+    }
+    .memory-match-mode-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .memory-match-mode-card-btn {
+      background: linear-gradient(145deg, #172346, #0e172e);
+      border: 2px solid #1e2e54;
+      border-radius: 16px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+      text-align: left;
+    }
+    .memory-match-mode-card-btn:active {
+      transform: scale(0.97);
+    }
+    .memory-match-mode-card-btn.single-btn {
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+    .memory-match-mode-card-btn.single-btn:hover {
+      border-color: #38bdf8;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
+    }
+    .memory-match-mode-card-btn.multi-btn {
+      border-color: rgba(168, 85, 247, 0.5);
+    }
+    .memory-match-mode-card-btn.multi-btn:hover {
+      border-color: #a855f7;
+      box-shadow: 0 0 18px rgba(168, 85, 247, 0.45);
+    }
+    .mode-icon-circle {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+    .single-circle { background: rgba(56, 189, 248, 0.18); border: 1px solid #38bdf8; }
+    .multi-circle { background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; }
+    .mode-btn-text h4 {
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: #f8fafc;
+      line-height: 1.2;
+    }
+    .mode-btn-text p {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
     /* MODAL: SETUP FOR ALL GAMES */
     #mode-modal, #winner-modal {
       display: none;
@@ -1194,7 +1611,7 @@
     </div>
     <div class="header-actions-wrap">
       <button class="pill-btn" id="back-to-menu-btn" onclick="showLobby()">◀ Menu</button>
-      <!-- AUTOPLAY UNLOCK PROMPT (Visible only when browser rejects immediate autoplay) -->
+      <!-- AUTOPLAY UNLOCK PROMPT -->
       <button class="music-prompt-btn" id="music-tap-prompt" onclick="userUnlockBGM()">🔊 Tap to Enable Music</button>
       <!-- PERSISTENT MUSIC ON/OFF TOGGLE -->
       <button class="pill-btn music-btn active" id="music-toggle-btn" onclick="toggleBGM()">🎵 MUSIC ON</button>
@@ -1352,6 +1769,37 @@
         </div>
         <div class="card-bottom-bar">
           <span class="card-rating-text">★ 4.9</span>
+          <span class="play-pill-action">Play ▶</span>
+        </div>
+      </div>
+
+      <!-- 5. MEMORY MATCH (SOLO & 2-PLAYER) -->
+      <div class="game-card-premium" onclick="openModeModal('memorymatch')" data-gameid="memorymatch">
+        <div class="card-glow-bg" style="background:#a855f7;"></div>
+        <button class="card-fav-btn" onclick="toggleFav('memorymatch', event)" id="fav-btn-memorymatch" title="Favorite">❤</button>
+        <div class="card-art-box">
+          <svg viewBox="0 0 80 80">
+            <rect x="15" y="18" width="28" height="42" rx="7" fill="url(#memCardGrad1)" stroke="#c084fc" stroke-width="2" transform="rotate(-8 29 39)"/>
+            <text x="28" y="44" font-size="18" text-anchor="middle" transform="rotate(-8 29 39)">🦁</text>
+            <rect x="37" y="18" width="28" height="42" rx="7" fill="url(#memCardGrad2)" stroke="#38bdf8" stroke-width="2" transform="rotate(8 51 39)"/>
+            <text x="51" y="44" font-size="18" text-anchor="middle" transform="rotate(8 51 39)">🦁</text>
+            <defs>
+              <linearGradient id="memCardGrad1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#3b0764"/><stop offset="100%" stop-color="#1e1b4b"/>
+              </linearGradient>
+              <linearGradient id="memCardGrad2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0284c7"/><stop offset="100%" stop-color="#1e1b4b"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="card-info-block">
+          <span class="card-player-tag" style="color:#c084fc; background:rgba(192,132,252,0.15);">1P & 2-PLAYER LOCAL</span>
+          <div class="card-title-text">Memory Match</div>
+          <div class="card-sub-text">Match the Pairs!</div>
+        </div>
+        <div class="card-bottom-bar">
+          <span class="card-rating-text">★ 5.0</span>
           <span class="play-pill-action">Play ▶</span>
         </div>
       </div>
@@ -1531,6 +1979,73 @@
     </div>
   </main>
 
+  <!-- SCREEN 5: MEMORY MATCH SCREEN -->
+  <main id="memory-match-screen">
+    <!-- 1-PLAYER STATS BAR -->
+    <div class="memory-match-stats-bar" id="memory-match-single-stats">
+      <div class="memory-match-stat-item">
+        <div class="memory-match-stat-label">Moves</div>
+        <div class="memory-match-stat-val" id="memory-match-moves">0</div>
+      </div>
+      <div class="memory-match-stat-item">
+        <div class="memory-match-stat-label">Pairs</div>
+        <div class="memory-match-stat-val" id="memory-match-pairs">0/4</div>
+      </div>
+      <div class="memory-match-stat-item">
+        <div class="memory-match-stat-label">Time</div>
+        <div class="memory-match-stat-val" id="memory-match-timer">00:00</div>
+      </div>
+      <div class="memory-match-stat-item">
+        <div class="memory-match-stat-label">Accuracy</div>
+        <div class="memory-match-stat-val" id="memory-match-accuracy">100%</div>
+      </div>
+    </div>
+
+    <!-- 2-PLAYER LOCAL MULTIPLAYER SCOREBOARD & TURN INDICATOR -->
+    <div class="memory-match-2p-scoreboard" id="memory-match-2p-stats">
+      <div class="memory-match-2p-grid">
+        <div class="memory-match-player-panel p1-panel active-turn" id="memory-match-p1-box">
+          <span class="memory-match-p-badge p1-badge">PLAYER 1</span>
+          <div class="memory-match-p-score" id="memory-match-p1-score">0 pts</div>
+          <div class="memory-match-p-moves" id="memory-match-p1-moves">0 moves</div>
+          <span class="memory-match-p-turn-tag">★ YOUR TURN</span>
+        </div>
+        <div class="memory-match-player-panel p2-panel" id="memory-match-p2-box">
+          <span class="memory-match-p-badge p2-badge">PLAYER 2</span>
+          <div class="memory-match-p-score" id="memory-match-p2-score">0 pts</div>
+          <div class="memory-match-p-moves" id="memory-match-p2-moves">0 moves</div>
+          <span class="memory-match-p-turn-tag">★ YOUR TURN</span>
+        </div>
+      </div>
+      <div class="memory-match-2p-subbar">
+        <span>Matched: <b id="memory-match-2p-pairs">0/4</b> pairs</span>
+        <span>Time: <b id="memory-match-2p-timer">00:00</b></span>
+      </div>
+    </div>
+
+    <!-- TURN STATUS BANNER -->
+    <div class="memory-match-turn-banner" id="memory-match-turn-banner">
+      👉 Player 1's Turn: Flip two cards!
+    </div>
+
+    <!-- DIFFICULTY BAR -->
+    <div class="memory-match-diff-bar">
+      <button class="memory-match-diff-btn active" id="mem-btn-easy" onclick="setMemoryMatchDifficulty('easy')">Easy (8)</button>
+      <button class="memory-match-diff-btn" id="mem-btn-medium" onclick="setMemoryMatchDifficulty('medium')">Medium (12)</button>
+      <button class="memory-match-diff-btn" id="mem-btn-hard" onclick="setMemoryMatchDifficulty('hard')">Hard (16)</button>
+    </div>
+
+    <!-- 3D CARDS GRID -->
+    <div class="memory-match-grid-wrap">
+      <div class="memory-match-grid diff-easy" id="memory-match-board"></div>
+    </div>
+
+    <div class="memory-match-actions-row">
+      <button class="ttt-act-btn btn-gold" onclick="restartMemoryMatchGame()">🔄 Play Again</button>
+      <button class="ttt-act-btn" onclick="openMemoryMatchModeSelection()">👥 Change Mode</button>
+    </div>
+  </main>
+
   <!-- BOTTOM NAVIGATION BAR -->
   <nav class="bottom-nav">
     <button class="nav-tab-btn active" id="tab-nav-home" onclick="navToTab('home')">
@@ -1563,7 +2078,35 @@
     </button>
   </nav>
 
-  <!-- MODAL: DYNAMIC GAME SETUP -->
+  <!-- MODAL: MEMORY MATCH MODE SELECTION (1P vs 2P) -->
+  <div id="memory-match-mode-modal">
+    <div class="memory-match-mode-box">
+      <h3>Memory Match</h3>
+      <p>Choose how you want to play:</p>
+
+      <div class="memory-match-mode-options">
+        <div class="memory-match-mode-card-btn single-btn" onclick="selectMemoryMatchMode('single')">
+          <div class="mode-icon-circle single-circle">👤</div>
+          <div class="mode-btn-text">
+            <h4>Single Player</h4>
+            <p>Solo brain challenge. Track moves & time.</p>
+          </div>
+        </div>
+
+        <div class="memory-match-mode-card-btn multi-btn" onclick="selectMemoryMatchMode('two_player')">
+          <div class="mode-icon-circle multi-circle">👥</div>
+          <div class="mode-btn-text">
+            <h4>2 Player — Play Together</h4>
+            <p>Pass & Play on 1 phone. Keep turn on match!</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="m-btn-close" onclick="closeMemoryMatchModeModal()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- MODAL: DYNAMIC GAME SETUP (LUDO, SNAKES, TTT, CHECKERS) -->
   <div id="mode-modal">
     <div class="modal-box">
       <h3 id="modal-title-text">Match Setup</h3>
@@ -1625,8 +2168,9 @@
     <div class="modal-box">
       <div class="win-title" id="winner-text">Player 1 Won!</div>
       <p id="winner-subtext">Match khatam ho gaya.</p>
-      <div style="display:flex; flex-direction:column; gap:8px;">
+      <div style="display:flex; flex-direction:column; gap:8px;" id="winner-actions-container">
         <button class="start-match-btn" onclick="restartGame()">🔄 Naya Match Shuru Karein</button>
+        <button class="ttt-act-btn" id="winner-change-mode-btn" style="display:none;" onclick="openMemoryMatchModeSelection()">👥 Change Mode</button>
         <button class="m-btn-close" onclick="showLobby()">◀ Main Menu</button>
       </div>
     </div>
@@ -1914,7 +2458,7 @@
     }
 
     function updateFavsUI() {
-      ['ludo','snakes','tictactoe','checkers'].forEach(id => {
+      ['ludo','snakes','tictactoe','checkers','memorymatch'].forEach(id => {
         const btn = document.getElementById(`fav-btn-${id}`);
         if (btn) btn.classList.toggle('is-fav', userFavorites.includes(id));
       });
@@ -1960,7 +2504,11 @@
       document.getElementById('play-screen').style.display = 'none';
       document.getElementById('ttt-screen').style.display = 'none';
       document.getElementById('checkers-screen').style.display = 'none';
+      document.getElementById('memory-match-screen').style.display = 'none';
       document.getElementById('back-to-menu-btn').style.display = 'none';
+
+      // Clean up memory match timer when navigating away
+      stopMemoryMatchTimer();
 
       if (tabName === 'home') {
         document.getElementById('lobby-screen').style.display = 'flex';
@@ -2075,6 +2623,12 @@
     function openModeModal(gameType) {
       triggerHaptic(20);
       activeGameType = gameType;
+
+      if (gameType === 'memorymatch') {
+        openMemoryMatchModeSelection();
+        return;
+      }
+
       const titles = {
         ludo: "Ludo King 3D Setup",
         snakes: "Snakes & Ladders Setup",
@@ -2172,11 +2726,13 @@
       if (activeGameType === 'tictactoe') {
         document.getElementById('play-screen').style.display = 'none';
         document.getElementById('checkers-screen').style.display = 'none';
+        document.getElementById('memory-match-screen').style.display = 'none';
         document.getElementById('ttt-screen').style.display = 'flex';
         startTTTGame();
       } else if (activeGameType === 'checkers') {
         document.getElementById('play-screen').style.display = 'none';
         document.getElementById('ttt-screen').style.display = 'none';
+        document.getElementById('memory-match-screen').style.display = 'none';
         document.getElementById('checkers-screen').style.display = 'flex';
         startCheckersGame();
       } else {
@@ -2191,6 +2747,7 @@
 
         document.getElementById('ttt-screen').style.display = 'none';
         document.getElementById('checkers-screen').style.display = 'none';
+        document.getElementById('memory-match-screen').style.display = 'none';
         document.getElementById('play-screen').style.display = 'flex';
 
         restartGame();
@@ -2200,6 +2757,10 @@
     function restartGame() {
       document.getElementById('winner-modal').style.display = 'none';
 
+      if (activeGameType === 'memorymatch') {
+        restartMemoryMatchGame();
+        return;
+      }
       if (activeGameType === 'tictactoe') {
         resetTTTRound();
         return;
@@ -2442,6 +3003,7 @@
       if (won) {
         document.getElementById('winner-text').innerText = `${playerMeta[cur].name} Won Ludo King!`;
         document.getElementById('winner-subtext').innerText = "100% Progress Complete! Saari gotiyan Home pahunch gayi.";
+        document.getElementById('winner-change-mode-btn').style.display = 'none';
         document.getElementById('winner-modal').style.display = 'flex';
         playBeep(750, 'triangle', 0.4);
         triggerHaptic(120);
@@ -2535,6 +3097,7 @@
       if (snakePositions[cur] === 100) {
         document.getElementById('winner-text').innerText = `${playerMeta[cur].name} Won Snakes & Ladders!`;
         document.getElementById('winner-subtext').innerText = "Square 100 par sabse pehle pahuchein!";
+        document.getElementById('winner-change-mode-btn').style.display = 'none';
         document.getElementById('winner-modal').style.display = 'flex';
         playBeep(780, 'triangle', 0.4);
         triggerHaptic(120);
@@ -3098,6 +3661,7 @@
 
         document.getElementById('winner-text').innerText = `${winnerLabel} Won!`;
         document.getElementById('winner-subtext').innerText = "Tic Tac Toe match complete!";
+        document.getElementById('winner-change-mode-btn').style.display = 'none';
         document.getElementById('winner-modal').style.display = 'flex';
         return;
       }
@@ -3114,6 +3678,7 @@
 
         document.getElementById('winner-text').innerText = "Match Draw (Tie)!";
         document.getElementById('winner-subtext').innerText = "Sabhi 9 cells bhar gaye hain!";
+        document.getElementById('winner-change-mode-btn').style.display = 'none';
         document.getElementById('winner-modal').style.display = 'flex';
         return;
       }
@@ -3386,6 +3951,7 @@
         document.getElementById('chk-status-banner').innerText = `🏆 ${winner} Jeet Gaya!`;
         document.getElementById('winner-text').innerText = `${winner} Won Checkers!`;
         document.getElementById('winner-subtext').innerText = "Opponent ke paas koi valid chaal nahi bachi!";
+        document.getElementById('winner-change-mode-btn').style.display = 'none';
         document.getElementById('winner-modal').style.display = 'flex';
         return;
       }
@@ -3707,6 +4273,351 @@
       }
 
       context.restore();
+    }
+
+    // =========================================================================
+    // 5TH GAME: MEMORY MATCH ENGINE (SINGLE PLAYER + 2-PLAYER LOCAL MULTIPLAYER)
+    // =========================================================================
+    const memoryMatchIcons = [
+      '🐼', '🦁', '🐸', '🐵', '🐱', '🐶', '🦋', '🐰',
+      '🍎', '🍓', '🍉', '🚗', '🚀', '⭐', '⚽', '🎈'
+    ];
+
+    let memoryMatchMode = 'single'; // 'single' or 'two_player'
+    let memoryMatchDifficulty = 'easy'; // 'easy' (4 pairs), 'medium' (6 pairs), 'hard' (8 pairs)
+    let memoryMatchCards = [];
+    let memoryMatchFlippedCards = [];
+    let memoryMatchMatchedCount = 0;
+    let memoryMatchTotalPairs = 4;
+    let memoryMatchTimerInterval = null;
+    let memoryMatchSeconds = 0;
+    let memoryMatchIsLocked = false;
+    let memoryMatchGameOver = false;
+
+    // Single-Player Specific State
+    let memoryMatchMoves = 0;
+
+    // 2-Player Multiplayer Specific State
+    let memoryMatch2PCurrentTurn = 1; // 1 or 2
+    let memoryMatch2PScores = { 1: 0, 2: 0 };
+    let memoryMatch2PMoves = { 1: 0, 2: 0 };
+
+    function openMemoryMatchModeSelection() {
+      triggerHaptic(20);
+      document.getElementById('winner-modal').style.display = 'none';
+      document.getElementById('memory-match-mode-modal').style.display = 'flex';
+    }
+
+    function closeMemoryMatchModeModal() {
+      document.getElementById('memory-match-mode-modal').style.display = 'none';
+    }
+
+    function selectMemoryMatchMode(mode) {
+      triggerHaptic(25);
+      memoryMatchMode = mode;
+      closeMemoryMatchModeModal();
+
+      document.getElementById('lobby-screen').style.display = 'none';
+      document.getElementById('favorites-screen').style.display = 'none';
+      document.getElementById('settings-screen').style.display = 'none';
+      document.getElementById('play-screen').style.display = 'none';
+      document.getElementById('ttt-screen').style.display = 'none';
+      document.getElementById('checkers-screen').style.display = 'none';
+      document.getElementById('back-to-menu-btn').style.display = 'block';
+      document.getElementById('memory-match-screen').style.display = 'flex';
+
+      restartMemoryMatchGame();
+    }
+
+    function setMemoryMatchDifficulty(diff) {
+      if (memoryMatchDifficulty === diff && memoryMatchCards.length > 0) return;
+      triggerHaptic(15);
+      memoryMatchDifficulty = diff;
+
+      document.querySelectorAll('.memory-match-diff-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById(`mem-btn-${diff}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      restartMemoryMatchGame();
+    }
+
+    function startMemoryMatchGame() {
+      restartMemoryMatchGame();
+    }
+
+    function restartMemoryMatchGame() {
+      stopMemoryMatchTimer();
+      memoryMatchFlippedCards = [];
+      memoryMatchMatchedCount = 0;
+      memoryMatchSeconds = 0;
+      memoryMatchIsLocked = false;
+      memoryMatchGameOver = false;
+
+      // Reset single-player metrics
+      memoryMatchMoves = 0;
+
+      // Reset 2-player metrics
+      memoryMatch2PCurrentTurn = 1;
+      memoryMatch2PScores = { 1: 0, 2: 0 };
+      memoryMatch2PMoves = { 1: 0, 2: 0 };
+
+      if (memoryMatchDifficulty === 'easy') memoryMatchTotalPairs = 4;
+      else if (memoryMatchDifficulty === 'medium') memoryMatchTotalPairs = 6;
+      else memoryMatchTotalPairs = 8;
+
+      updateMemoryMatchScoreboardsUI();
+      buildMemoryMatchDeck();
+      renderMemoryMatchBoard();
+      startMemoryMatchTimer();
+    }
+
+    function buildMemoryMatchDeck() {
+      const shuffledIcons = [...memoryMatchIcons].sort(() => Math.random() - 0.5);
+      const chosenIcons = shuffledIcons.slice(0, memoryMatchTotalPairs);
+
+      const cardList = [];
+      chosenIcons.forEach((icon, i) => {
+        cardList.push({ id: i * 2, icon: icon, pairId: i, isMatched: false, matchedBy: null });
+        cardList.push({ id: i * 2 + 1, icon: icon, pairId: i, isMatched: false, matchedBy: null });
+      });
+
+      // Fisher-Yates shuffle
+      for (let i = cardList.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cardList[i], cardList[j]] = [cardList[j], cardList[i]];
+      }
+
+      memoryMatchCards = cardList;
+    }
+
+    function renderMemoryMatchBoard() {
+      const board = document.getElementById('memory-match-board');
+      board.innerHTML = '';
+      board.className = `memory-match-grid diff-${memoryMatchDifficulty}`;
+
+      memoryMatchCards.forEach((card, idx) => {
+        const cardElem = document.createElement('div');
+        cardElem.className = `memory-match-card diff-${memoryMatchDifficulty}`;
+        cardElem.id = `mem-card-${idx}`;
+        cardElem.onclick = () => handleMemoryCardTap(idx);
+
+        cardElem.innerHTML = `
+          <div class="memory-match-card-inner">
+            <div class="memory-match-face memory-match-front">?</div>
+            <div class="memory-match-face memory-match-back">${card.icon}</div>
+          </div>
+        `;
+        board.appendChild(cardElem);
+      });
+    }
+
+    function handleMemoryCardTap(index) {
+      if (memoryMatchIsLocked || memoryMatchGameOver) return;
+      const card = memoryMatchCards[index];
+      if (card.isMatched) return;
+
+      const cardEl = document.getElementById(`mem-card-${index}`);
+      if (cardEl.classList.contains('is-flipped')) return;
+
+      // Prevent taps if 2 cards already face-up
+      if (memoryMatchFlippedCards.length >= 2) return;
+
+      triggerHaptic(18);
+      playBeep(480, 'sine', 0.06);
+      cardEl.classList.add('is-flipped');
+      memoryMatchFlippedCards.push({ index, card });
+
+      if (memoryMatchFlippedCards.length === 2) {
+        memoryMatchIsLocked = true;
+
+        if (memoryMatchMode === 'two_player') {
+          memoryMatch2PMoves[memoryMatch2PCurrentTurn]++;
+        } else {
+          memoryMatchMoves++;
+        }
+        updateMemoryMatchScoreboardsUI();
+
+        const [first, second] = memoryMatchFlippedCards;
+        if (first.card.pairId === second.card.pairId) {
+          // MATCH FOUND!
+          first.card.isMatched = true;
+          second.card.isMatched = true;
+          memoryMatchMatchedCount++;
+
+          const activeTurnAtMatch = memoryMatch2PCurrentTurn;
+          if (memoryMatchMode === 'two_player') {
+            first.card.matchedBy = activeTurnAtMatch;
+            second.card.matchedBy = activeTurnAtMatch;
+            memoryMatch2PScores[activeTurnAtMatch]++;
+          }
+
+          setTimeout(() => {
+            playBeep(780, 'triangle', 0.18);
+            triggerHaptic(50);
+            const el1 = document.getElementById(`mem-card-${first.index}`);
+            const el2 = document.getElementById(`mem-card-${second.index}`);
+            if (el1) {
+              el1.classList.add('is-matched');
+              if (memoryMatchMode === 'two_player') el1.classList.add(`matched-p${activeTurnAtMatch}`);
+            }
+            if (el2) {
+              el2.classList.add('is-matched');
+              if (memoryMatchMode === 'two_player') el2.classList.add(`matched-p${activeTurnAtMatch}`);
+            }
+
+            memoryMatchFlippedCards = [];
+            memoryMatchIsLocked = false;
+            updateMemoryMatchScoreboardsUI();
+
+            if (memoryMatchMatchedCount === memoryMatchTotalPairs) {
+              handleMemoryMatchVictory();
+            } else if (memoryMatchMode === 'two_player') {
+              // Keeps the turn on a match
+              const banner = document.getElementById('memory-match-turn-banner');
+              if (banner) {
+                banner.innerText = `✨ Match! Player ${activeTurnAtMatch} earns 1 pt & keeps the turn!`;
+                banner.style.color = activeTurnAtMatch === 1 ? '#38bdf8' : '#f43f5e';
+              }
+            }
+          }, 400);
+        } else {
+          // MISMATCH
+          setTimeout(() => {
+            playBeep(180, 'sawtooth', 0.18);
+            triggerHaptic(40);
+            const el1 = document.getElementById(`mem-card-${first.index}`);
+            const el2 = document.getElementById(`mem-card-${second.index}`);
+            if (el1) el1.classList.add('mismatch-shake');
+            if (el2) el2.classList.add('mismatch-shake');
+
+            setTimeout(() => {
+              if (el1) el1.classList.remove('is-flipped', 'mismatch-shake');
+              if (el2) el2.classList.remove('is-flipped', 'mismatch-shake');
+              memoryMatchFlippedCards = [];
+
+              if (memoryMatchMode === 'two_player') {
+                // Turn passes to the next player
+                memoryMatch2PCurrentTurn = (memoryMatch2PCurrentTurn === 1) ? 2 : 1;
+              }
+
+              memoryMatchIsLocked = false;
+              updateMemoryMatchScoreboardsUI();
+            }, 600);
+          }, 400);
+        }
+      }
+    }
+
+    function updateMemoryMatchScoreboardsUI() {
+      const is2P = (memoryMatchMode === 'two_player');
+      document.getElementById('memory-match-single-stats').style.display = is2P ? 'none' : 'grid';
+      document.getElementById('memory-match-2p-stats').style.display = is2P ? 'flex' : 'none';
+      document.getElementById('memory-match-turn-banner').style.display = is2P ? 'block' : 'none';
+
+      if (!is2P) {
+        document.getElementById('memory-match-moves').innerText = memoryMatchMoves;
+        document.getElementById('memory-match-pairs').innerText = `${memoryMatchMatchedCount}/${memoryMatchTotalPairs}`;
+        let acc = 100;
+        if (memoryMatchMoves > 0) {
+          acc = Math.min(100, Math.round((memoryMatchMatchedCount / memoryMatchMoves) * 100));
+        }
+        document.getElementById('memory-match-accuracy').innerText = `${acc}%`;
+      } else {
+        // 2-Player UI
+        document.getElementById('memory-match-p1-score').innerText = `${memoryMatch2PScores[1]} pts`;
+        document.getElementById('memory-match-p1-moves').innerText = `${memoryMatch2PMoves[1]} moves`;
+
+        document.getElementById('memory-match-p2-score').innerText = `${memoryMatch2PScores[2]} pts`;
+        document.getElementById('memory-match-p2-moves').innerText = `${memoryMatch2PMoves[2]} moves`;
+
+        document.getElementById('memory-match-2p-pairs').innerText = `${memoryMatchMatchedCount}/${memoryMatchTotalPairs}`;
+
+        const p1Box = document.getElementById('memory-match-p1-box');
+        const p2Box = document.getElementById('memory-match-p2-box');
+        p1Box.classList.toggle('active-turn', memoryMatch2PCurrentTurn === 1 && !memoryMatchGameOver);
+        p2Box.classList.toggle('active-turn', memoryMatch2PCurrentTurn === 2 && !memoryMatchGameOver);
+
+        const banner = document.getElementById('memory-match-turn-banner');
+        if (banner && !memoryMatchGameOver) {
+          banner.innerText = `👉 Player ${memoryMatch2PCurrentTurn}'s Turn: Flip two cards!`;
+          banner.style.color = (memoryMatch2PCurrentTurn === 1) ? '#38bdf8' : '#f43f5e';
+        }
+      }
+    }
+
+    function startMemoryMatchTimer() {
+      stopMemoryMatchTimer();
+      memoryMatchSeconds = 0;
+      updateMemoryMatchTimerDisplay();
+
+      memoryMatchTimerInterval = setInterval(() => {
+        memoryMatchSeconds++;
+        updateMemoryMatchTimerDisplay();
+      }, 1000);
+    }
+
+    function stopMemoryMatchTimer() {
+      if (memoryMatchTimerInterval) {
+        clearInterval(memoryMatchTimerInterval);
+        memoryMatchTimerInterval = null;
+      }
+    }
+
+    function updateMemoryMatchTimerDisplay() {
+      const mins = Math.floor(memoryMatchSeconds / 60).toString().padStart(2, '0');
+      const secs = (memoryMatchSeconds % 60).toString().padStart(2, '0');
+      const timeStr = `${mins}:${secs}`;
+
+      const tSingle = document.getElementById('memory-match-timer');
+      if (tSingle) tSingle.innerText = timeStr;
+
+      const t2P = document.getElementById('memory-match-2p-timer');
+      if (t2P) t2P.innerText = timeStr;
+    }
+
+    function handleMemoryMatchVictory() {
+      stopMemoryMatchTimer();
+      memoryMatchGameOver = true;
+      playBeep(880, 'triangle', 0.4);
+      triggerHaptic(120);
+
+      const mins = Math.floor(memoryMatchSeconds / 60).toString().padStart(2, '0');
+      const secs = (memoryMatchSeconds % 60).toString().padStart(2, '0');
+      const totalTimeStr = `${mins}:${secs}`;
+
+      const winTitle = document.getElementById('winner-text');
+      const winSub = document.getElementById('winner-subtext');
+      const changeModeBtn = document.getElementById('winner-change-mode-btn');
+      if (changeModeBtn) changeModeBtn.style.display = 'flex';
+
+      if (memoryMatchMode === 'single') {
+        const acc = Math.min(100, Math.round((memoryMatchMatchedCount / memoryMatchMoves) * 100));
+        winTitle.innerText = "🎉 Super Brain! You Won!";
+        winSub.innerText = `Total Moves: ${memoryMatchMoves} | Time: ${totalTimeStr} | Accuracy: ${acc}%`;
+      } else {
+        // 2-Player Match Evaluation
+        const p1Score = memoryMatch2PScores[1];
+        const p2Score = memoryMatch2PScores[2];
+
+        if (p1Score > p2Score) {
+          winTitle.innerText = "🏆 PLAYER 1 WINS!";
+          winTitle.style.color = "#38bdf8";
+        } else if (p2Score > p1Score) {
+          winTitle.innerText = "🏆 PLAYER 2 WINS!";
+          winTitle.style.color = "#f43f5e";
+        } else {
+          winTitle.innerText = "🤝 IT'S A DRAW!";
+          winTitle.style.color = "#facc15";
+        }
+
+        winSub.innerHTML = `
+          <b>Player 1:</b> ${p1Score} pts (${memoryMatch2PMoves[1]} moves)<br>
+          <b>Player 2:</b> ${p2Score} pts (${memoryMatch2PMoves[2]} moves)<br>
+          <b>Total Time:</b> ${totalTimeStr}
+        `;
+      }
+
+      document.getElementById('winner-modal').style.display = 'flex';
     }
 
     // INITIAL APP INITIALIZATION
