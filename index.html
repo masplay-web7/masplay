@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -9,7 +9,7 @@
       --bg-main: #060913;
       --bg-surface: #0e1526;
       --bg-surface-elevated: #162038;
-      --bg-card-glass: rgba(18, 27, 49, 0.75);
+      --bg-card-glass: rgba(18, 27, 49, 0.78);
       --accent-cyan: #06b6d4;
       --accent-blue: #38bdf8;
       --accent-purple: #8b5cf6;
@@ -972,9 +972,7 @@
       margin-top: 2px;
     }
 
-    /* =========================================================================
-       5TH GAME: MEMORY MATCH (SINGLE-PLAYER & 2-PLAYER LOCAL MULTIPLAYER)
-       ========================================================================= */
+    /* 5TH GAME: MEMORY MATCH */
     #memory-match-screen {
       display: none;
       width: 100%;
@@ -986,7 +984,6 @@
       animation: fadeIn 0.22s ease-out;
     }
 
-    /* SINGLE-PLAYER STATS BAR */
     .memory-match-stats-bar {
       width: 100%;
       background: #111c38;
@@ -1017,7 +1014,6 @@
       color: #facc15;
     }
 
-    /* 2-PLAYER MULTIPLAYER SCOREBOARD & TURN PANELS */
     .memory-match-2p-scoreboard {
       width: 100%;
       display: none;
@@ -1045,9 +1041,7 @@
     .memory-match-player-panel.p1-panel { border-color: rgba(56, 189, 248, 0.35); }
     .memory-match-player-panel.p2-panel { border-color: rgba(244, 63, 94, 0.35); }
 
-    .memory-match-player-panel.active-turn {
-      transform: scale(1.03);
-    }
+    .memory-match-player-panel.active-turn { transform: scale(1.03); }
     .memory-match-player-panel.p1-panel.active-turn {
       border-color: #38bdf8;
       box-shadow: 0 0 16px rgba(56, 189, 248, 0.55), 0 4px 12px rgba(0, 0, 0, 0.6);
@@ -1099,9 +1093,7 @@
       border-radius: 6px;
       visibility: hidden;
     }
-    .memory-match-player-panel.active-turn .memory-match-p-turn-tag {
-      visibility: visible;
-    }
+    .memory-match-player-panel.active-turn .memory-match-p-turn-tag { visibility: visible; }
     .p1-panel .memory-match-p-turn-tag { background: #0284c7; color: #fff; }
     .p2-panel .memory-match-p-turn-tag { background: #e11d48; color: #fff; }
 
@@ -1253,9 +1245,7 @@
       font-size: 2.1rem;
       box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.3);
     }
-    .memory-match-card.diff-hard .memory-match-back {
-      font-size: 1.75rem;
-    }
+    .memory-match-card.diff-hard .memory-match-back { font-size: 1.75rem; }
     .memory-match-card.is-matched .memory-match-back {
       border-color: #22c55e;
       background: linear-gradient(145deg, #f0fdf4, #dcfce7);
@@ -1293,255 +1283,345 @@
       gap: 10px;
     }
 
-    /* MEMORY MATCH MODE SELECTION MODAL */
-    #memory-match-mode-modal {
+    /* =========================================================================
+       NEW UNIFIED MASPLAY GAME MODE POPUP DESIGN SYSTEM
+       ========================================================================= */
+    .masplay-modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.88);
-      z-index: 110;
+      background: rgba(3, 6, 16, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 1000;
       align-items: center;
       justify-content: center;
       padding: 16px;
+      opacity: 0;
+      transition: opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .memory-match-mode-box {
-      background: #0f172a;
-      border: 2px solid #a855f7;
-      box-shadow: 0 0 32px rgba(168, 85, 247, 0.4);
-      border-radius: 20px;
+    .masplay-modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+    .masplay-popup-card {
       width: 100%;
-      max-width: 360px;
-      padding: 22px 18px;
-      text-align: center;
+      max-width: 390px;
+      background: radial-gradient(circle at 50% 0%, #1a1740 0%, #0d1326 60%, #080c18 100%);
+      border: 1px solid rgba(139, 92, 246, 0.45);
+      border-radius: 26px;
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.85),
+                  0 0 35px rgba(139, 92, 246, 0.35),
+                  inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      padding: 20px 18px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      animation: splashReveal 0.3s ease-out;
+      position: relative;
+      overflow: hidden;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: scale(0.9) translateY(16px);
+      transition: transform 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .memory-match-mode-box h3 {
-      font-size: 1.35rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, #38bdf8, #c084fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .masplay-modal-overlay.active .masplay-popup-card {
+      transform: scale(1) translateY(0);
     }
-    .memory-match-mode-box p {
-      font-size: 0.76rem;
-      color: #94a3b8;
-      margin-top: -8px;
+    .mp-popup-glow {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 220px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.35), transparent 70%);
+      filter: blur(25px);
+      pointer-events: none;
     }
-    .memory-match-mode-options {
+
+    /* Modal Header */
+    .mp-popup-head {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 4px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 2;
     }
-    .memory-match-mode-card-btn {
-      background: linear-gradient(145deg, #172346, #0e172e);
-      border: 2px solid #1e2e54;
-      border-radius: 16px;
-      padding: 12px 14px;
+    .mp-popup-brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
-      text-align: left;
+      gap: 10px;
     }
-    .memory-match-mode-card-btn:active {
-      transform: scale(0.97);
-    }
-    .memory-match-mode-card-btn.single-btn {
-      border-color: rgba(56, 189, 248, 0.4);
-    }
-    .memory-match-mode-card-btn.single-btn:hover {
-      border-color: #38bdf8;
-      box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
-    }
-    .memory-match-mode-card-btn.multi-btn {
-      border-color: rgba(168, 85, 247, 0.5);
-    }
-    .memory-match-mode-card-btn.multi-btn:hover {
-      border-color: #a855f7;
-      box-shadow: 0 0 18px rgba(168, 85, 247, 0.45);
-    }
-    .mode-icon-circle {
-      width: 46px;
-      height: 46px;
+    .mp-popup-icon-badge {
+      width: 44px;
+      height: 44px;
       border-radius: 14px;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.25), rgba(168, 85, 247, 0.3));
+      border: 1px solid rgba(56, 189, 248, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+    .mp-popup-titles h3 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      background: linear-gradient(135deg, #ffffff 20%, #38bdf8 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.15;
+    }
+    .mp-popup-titles p {
+      font-size: 0.72rem;
+      color: #94a3b8;
+      font-weight: 700;
+    }
+    .mp-popup-close-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.12s;
+    }
+    .mp-popup-close-btn:active {
+      transform: scale(0.92);
+      background: rgba(239, 68, 68, 0.3);
+      color: #ffffff;
+    }
+
+    /* Section Label */
+    .mp-step-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin: 10px 0 6px 0;
+    }
+    .mp-step-label .mp-tag {
+      font-size: 0.65rem;
+      color: #facc15;
+      text-transform: none;
+      letter-spacing: 0px;
+    }
+
+    /* Primary Mode Selection Tabs */
+    .mp-mode-toggle-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: rgba(10, 16, 32, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 16px;
+      padding: 4px;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .mp-mode-tab {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 10px 8px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.18s cubic-bezier(0.2, 0, 0, 1);
+    }
+    .mp-mode-tab.active {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(139, 92, 246, 0.45));
+      border: 1px solid #38bdf8;
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35);
+    }
+
+    /* Sub-Options List / Cards */
+    .mp-options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .mp-option-card {
+      background: rgba(18, 26, 48, 0.7);
+      border: 1.5px solid rgba(56, 189, 248, 0.16);
+      border-radius: 16px;
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .mp-option-card:active {
+      transform: scale(0.98);
+    }
+    .mp-option-card.selected {
+      background: linear-gradient(145deg, rgba(30, 27, 75, 0.85), rgba(14, 25, 52, 0.95));
+      border-color: #38bdf8;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .mp-opt-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .mp-opt-radio {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
       flex-shrink: 0;
     }
-    .single-circle { background: rgba(56, 189, 248, 0.18); border: 1px solid #38bdf8; }
-    .multi-circle { background: rgba(168, 85, 247, 0.2); border: 1px solid #a855f7; }
-    .mode-btn-text h4 {
-      font-size: 0.95rem;
+    .mp-option-card.selected .mp-opt-radio {
+      border-color: #38bdf8;
+      background: #0284c7;
+      box-shadow: 0 0 8px #38bdf8;
+    }
+    .mp-opt-radio::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ffffff;
+      opacity: 0;
+      transform: scale(0.4);
+      transition: all 0.15s;
+    }
+    .mp-option-card.selected .mp-opt-radio::after {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .mp-opt-texts h4 {
+      font-size: 0.86rem;
       font-weight: 900;
       color: #f8fafc;
       line-height: 1.2;
     }
-    .mode-btn-text p {
-      font-size: 0.7rem;
+    .mp-opt-texts p {
+      font-size: 0.68rem;
       color: #94a3b8;
-      margin-top: 2px;
+      margin-top: 1px;
+    }
+    .mp-token-preview-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .mp-mini-token {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+    }
+    .mp-tok-blue { background: #3b82f6; }
+    .mp-tok-red { background: #ef4444; }
+    .mp-tok-green { background: #22c55e; }
+    .mp-tok-yellow { background: #eab308; }
+
+    /* AI Difficulty Chips */
+    .mp-chips-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .mp-chip-btn {
+      padding: 9px 4px;
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      font-size: 0.75rem;
+      font-weight: 800;
+      background: rgba(18, 26, 48, 0.7);
+      color: #cbd5e1;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .mp-chip-btn:active { transform: scale(0.96); }
+    .mp-chip-btn.active {
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      border-color: #38bdf8;
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.45);
     }
 
-    /* MODAL: SETUP FOR ALL GAMES */
-    #mode-modal, #winner-modal {
+    /* Modal Action Buttons */
+    .mp-popup-actions {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .mp-btn-secondary {
+      background: rgba(22, 32, 56, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #cbd5e1;
+      font-size: 0.84rem;
+      font-weight: 800;
+      padding: 13px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.12s;
+    }
+    .mp-btn-secondary:active {
+      background: #1e293b;
+      transform: scale(0.97);
+    }
+    .mp-btn-primary {
+      background: linear-gradient(135deg, #06b6d4 0%, #38bdf8 50%, #a855f7 100%);
+      border: none;
+      color: #040814;
+      font-size: 0.9rem;
+      font-weight: 900;
+      padding: 13px;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(6, 182, 212, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      letter-spacing: 0.3px;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .mp-btn-primary:active {
+      transform: scale(0.97);
+      box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
+    }
+
+    /* WINNER CELEBRATION MODAL */
+    #winner-modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.88);
-      z-index: 100;
+      background: rgba(3, 6, 16, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 1050;
       align-items: center;
       justify-content: center;
       padding: 16px;
-    }
-    .modal-box {
-      background: #0f172a;
-      border: 2px solid #f59e0b;
-      box-shadow: 0 0 30px rgba(245, 158, 11, 0.35);
-      border-radius: 18px;
-      width: 100%;
-      max-width: 350px;
-      padding: 20px;
-      text-align: center;
-    }
-    .modal-box h3 {
-      font-size: 1.25rem;
-      color: #fbbf24;
-      margin-bottom: 4px;
-      font-weight: 900;
-    }
-    .modal-box p {
-      font-size: 0.76rem;
-      color: #94a3b8;
-      margin-bottom: 12px;
-    }
-    .section-title {
-      font-size: 0.82rem;
-      font-weight: 800;
-      color: #38bdf8;
-      margin: 10px 0 6px 0;
-      text-align: left;
-      display: flex;
-      justify-content: space-between;
-    }
-    .sub-badge { font-size: 0.7rem; color: #facc15; }
-    .opp-type-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    .opp-chip {
-      padding: 10px 6px;
-      border-radius: 12px;
-      border: 1px solid #334155;
-      font-size: 0.78rem;
-      font-weight: 800;
-      background: #1e293b;
-      color: #cbd5e1;
-      cursor: pointer;
-    }
-    .opp-chip.active {
-      background: #0284c7;
-      border-color: #38bdf8;
-      color: #fff;
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
-    }
-    .diff-select-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      margin-bottom: 10px;
-    }
-    .diff-chip {
-      padding: 8px 4px;
-      border-radius: 10px;
-      border: 1px solid #334155;
-      font-size: 0.74rem;
-      font-weight: 800;
-      background: #1e293b;
-      color: #cbd5e1;
-      cursor: pointer;
-    }
-    .diff-chip.active {
-      background: #f59e0b;
-      border-color: #fbbf24;
-      color: #0b1120;
-    }
-    .count-select-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-    .count-chip {
-      padding: 8px 4px;
-      border-radius: 10px;
-      border: 1px solid #334155;
-      font-size: 0.75rem;
-      font-weight: 800;
-      background: #1e293b;
-      color: #cbd5e1;
-      cursor: pointer;
-    }
-    .count-chip.active {
-      background: #0284c7;
-      border-color: #38bdf8;
-      color: #fff;
-    }
-    .color-select-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      margin-bottom: 14px;
-    }
-    .color-chip {
-      padding: 10px 4px;
-      border-radius: 12px;
-      border: 2px solid transparent;
-      font-size: 0.74rem;
-      font-weight: 900;
-      color: #fff;
-      cursor: pointer;
-      opacity: 0.45;
-      transition: all 0.15s;
-    }
-    .color-chip.selected {
-      opacity: 1;
-      border-color: #ffffff;
-      box-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
-      transform: scale(1.06);
-    }
-    .chip-red { background: #ef4444; }
-    .chip-green { background: #22c55e; }
-    .chip-yellow { background: #eab308; color: #000; }
-    .chip-blue { background: #3b82f6; }
-    .start-match-btn {
-      width: 100%;
-      padding: 13px;
-      border-radius: 12px;
-      border: none;
-      font-weight: 900;
-      font-size: 0.95rem;
-      color: #0b1120;
-      background: linear-gradient(135deg, #fbbf24, #f59e0b);
-      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
-      cursor: pointer;
-    }
-    .start-match-btn:active { transform: scale(0.97); }
-    .m-btn-close {
-      background: transparent;
-      border: none;
-      color: #64748b;
-      margin-top: 10px;
-      font-size: 0.8rem;
-      cursor: pointer;
     }
     .win-title {
       font-size: 1.4rem;
@@ -1611,11 +1691,8 @@
     </div>
     <div class="header-actions-wrap">
       <button class="pill-btn" id="back-to-menu-btn" onclick="showLobby()">◀ Menu</button>
-      <!-- AUTOPLAY UNLOCK PROMPT -->
       <button class="music-prompt-btn" id="music-tap-prompt" onclick="userUnlockBGM()">🔊 Tap to Enable Music</button>
-      <!-- PERSISTENT MUSIC ON/OFF TOGGLE -->
       <button class="pill-btn music-btn active" id="music-toggle-btn" onclick="toggleBGM()">🎵 MUSIC ON</button>
-      <!-- SFX TOGGLE -->
       <button class="pill-btn" id="audio-toggle" onclick="toggleAudio()">🔊 SFX</button>
       <div class="avatar-btn" title="Player Profile" onclick="navToTab('settings')">👑</div>
     </div>
@@ -1668,7 +1745,7 @@
     <!-- 2-COLUMN PREMIUM GAME GRID -->
     <div class="games-grid-2col" id="games-main-grid">
       <!-- 1. LUDO -->
-      <div class="game-card-premium" onclick="openModeModal('ludo')" data-gameid="ludo">
+      <div class="game-card-premium" onclick="openGameSetupModal('ludo')" data-gameid="ludo">
         <div class="card-glow-bg" style="background:#f59e0b;"></div>
         <button class="card-fav-btn" onclick="toggleFav('ludo', event)" id="fav-btn-ludo" title="Favorite">❤</button>
         <div class="card-art-box">
@@ -1695,7 +1772,7 @@
       </div>
 
       <!-- 2. SNAKES & LADDERS -->
-      <div class="game-card-premium" onclick="openModeModal('snakes')" data-gameid="snakes">
+      <div class="game-card-premium" onclick="openGameSetupModal('snakes')" data-gameid="snakes">
         <div class="card-glow-bg" style="background:#22c55e;"></div>
         <button class="card-fav-btn" onclick="toggleFav('snakes', event)" id="fav-btn-snakes" title="Favorite">❤</button>
         <div class="card-art-box">
@@ -1722,7 +1799,7 @@
       </div>
 
       <!-- 3. TIC TAC TOE -->
-      <div class="game-card-premium" onclick="openModeModal('tictactoe')" data-gameid="tictactoe">
+      <div class="game-card-premium" onclick="openGameSetupModal('tictactoe')" data-gameid="tictactoe">
         <div class="card-glow-bg" style="background:#38bdf8;"></div>
         <button class="card-fav-btn" onclick="toggleFav('tictactoe', event)" id="fav-btn-tictactoe" title="Favorite">❤</button>
         <div class="card-art-box">
@@ -1749,7 +1826,7 @@
       </div>
 
       <!-- 4. CHECKERS -->
-      <div class="game-card-premium" onclick="openModeModal('checkers')" data-gameid="checkers">
+      <div class="game-card-premium" onclick="openGameSetupModal('checkers')" data-gameid="checkers">
         <div class="card-glow-bg" style="background:#ef4444;"></div>
         <button class="card-fav-btn" onclick="toggleFav('checkers', event)" id="fav-btn-checkers" title="Favorite">❤</button>
         <div class="card-art-box">
@@ -1773,8 +1850,8 @@
         </div>
       </div>
 
-      <!-- 5. MEMORY MATCH (SOLO & 2-PLAYER) -->
-      <div class="game-card-premium" onclick="openModeModal('memorymatch')" data-gameid="memorymatch">
+      <!-- 5. MEMORY MATCH -->
+      <div class="game-card-premium" onclick="openGameSetupModal('memorymatch')" data-gameid="memorymatch">
         <div class="card-glow-bg" style="background:#a855f7;"></div>
         <button class="card-fav-btn" onclick="toggleFav('memorymatch', event)" id="fav-btn-memorymatch" title="Favorite">❤</button>
         <div class="card-art-box">
@@ -1794,7 +1871,7 @@
           </svg>
         </div>
         <div class="card-info-block">
-          <span class="card-player-tag" style="color:#c084fc; background:rgba(192,132,252,0.15);">1P & 2-PLAYER LOCAL</span>
+          <span class="card-player-tag" style="color:#c084fc; background:rgba(192,132,252,0.15);">SOLO & 2P DUEL</span>
           <div class="card-title-text">Memory Match</div>
           <div class="card-sub-text">Match the Pairs!</div>
         </div>
@@ -1860,7 +1937,7 @@
       </div>
       <div class="settings-row">
         <span>Platform Version</span>
-        <span style="color:var(--text-muted);">MasPlay v3.0 (Zero-Toggle BGM)</span>
+        <span style="color:var(--text-muted);">MasPlay v3.5 (Unified Game Mode Redesign)</span>
       </div>
     </div>
   </section>
@@ -1914,7 +1991,7 @@
         </div>
       </div>
     </div>
-    <div class="hint-bar" id="game-hint">Apne dice par tap karein!</div>
+    <div class="hint-bar" id="game-hint">Tap your dice to roll!</div>
   </main>
 
   <!-- SCREEN 3: TIC TAC TOE SCREEN -->
@@ -1933,7 +2010,7 @@
         <div class="sp-val" id="ttt-val-o">0</div>
       </div>
     </div>
-    <div class="ttt-status-banner" id="ttt-turn-banner">Player X ki baari hai (Tap any cell)</div>
+    <div class="ttt-status-banner" id="ttt-turn-banner">Player X's Turn (Tap any cell)</div>
     <div class="ttt-board-box" id="ttt-board">
       <div class="ttt-cell" onclick="handleTTTCellTap(0)" id="ttt-c-0"></div>
       <div class="ttt-cell" onclick="handleTTTCellTap(1)" id="ttt-c-1"></div>
@@ -1947,7 +2024,7 @@
     </div>
     <div class="ttt-controls-row">
       <button class="ttt-act-btn btn-gold" onclick="resetTTTRound()">🔄 Play Again</button>
-      <button class="ttt-act-btn" onclick="resetTTTScores()">📊 Reset Score</button>
+      <button class="ttt-act-btn" onclick="openGameSetupModal('tictactoe')">⚙ Setup</button>
     </div>
   </main>
 
@@ -1969,19 +2046,18 @@
         </div>
       </div>
     </div>
-    <div class="checkers-banner" id="chk-status-banner">RED ki baari hai (Goti select karein)</div>
+    <div class="checkers-banner" id="chk-status-banner">RED's turn: Select your piece</div>
     <div id="checkers-canvas-wrap">
       <canvas id="checkers-stage" width="400" height="400"></canvas>
     </div>
     <div class="checkers-actions-row">
       <button class="ttt-act-btn btn-gold" onclick="resetCheckersMatch()">🔄 New Game</button>
-      <button class="ttt-act-btn" onclick="showLobby()">◀ Menu</button>
+      <button class="ttt-act-btn" onclick="openGameSetupModal('checkers')">⚙ Setup</button>
     </div>
   </main>
 
   <!-- SCREEN 5: MEMORY MATCH SCREEN -->
   <main id="memory-match-screen">
-    <!-- 1-PLAYER STATS BAR -->
     <div class="memory-match-stats-bar" id="memory-match-single-stats">
       <div class="memory-match-stat-item">
         <div class="memory-match-stat-label">Moves</div>
@@ -2001,7 +2077,6 @@
       </div>
     </div>
 
-    <!-- 2-PLAYER LOCAL MULTIPLAYER SCOREBOARD & TURN INDICATOR -->
     <div class="memory-match-2p-scoreboard" id="memory-match-2p-stats">
       <div class="memory-match-2p-grid">
         <div class="memory-match-player-panel p1-panel active-turn" id="memory-match-p1-box">
@@ -2023,26 +2098,23 @@
       </div>
     </div>
 
-    <!-- TURN STATUS BANNER -->
     <div class="memory-match-turn-banner" id="memory-match-turn-banner">
       👉 Player 1's Turn: Flip two cards!
     </div>
 
-    <!-- DIFFICULTY BAR -->
     <div class="memory-match-diff-bar">
       <button class="memory-match-diff-btn active" id="mem-btn-easy" onclick="setMemoryMatchDifficulty('easy')">Easy (8)</button>
       <button class="memory-match-diff-btn" id="mem-btn-medium" onclick="setMemoryMatchDifficulty('medium')">Medium (12)</button>
       <button class="memory-match-diff-btn" id="mem-btn-hard" onclick="setMemoryMatchDifficulty('hard')">Hard (16)</button>
     </div>
 
-    <!-- 3D CARDS GRID -->
     <div class="memory-match-grid-wrap">
       <div class="memory-match-grid diff-easy" id="memory-match-board"></div>
     </div>
 
     <div class="memory-match-actions-row">
       <button class="ttt-act-btn btn-gold" onclick="restartMemoryMatchGame()">🔄 Play Again</button>
-      <button class="ttt-act-btn" onclick="openMemoryMatchModeSelection()">👥 Change Mode</button>
+      <button class="ttt-act-btn" onclick="openGameSetupModal('memorymatch')">⚙ Change Mode</button>
     </div>
   </main>
 
@@ -2078,100 +2150,95 @@
     </button>
   </nav>
 
-  <!-- MODAL: MEMORY MATCH MODE SELECTION (1P vs 2P) -->
-  <div id="memory-match-mode-modal">
-    <div class="memory-match-mode-box">
-      <h3>Memory Match</h3>
-      <p>Choose how you want to play:</p>
+  <!-- =========================================================================
+       NEW UNIFIED MASPLAY GAME MODE REDESIGN POPUP (ALL 5 GAMES)
+       ========================================================================= -->
+  <div class="masplay-modal-overlay" id="masplay-game-modal" onclick="handleModalOverlayClick(event)">
+    <div class="masplay-popup-card" onclick="event.stopPropagation()">
+      <div class="mp-popup-glow"></div>
 
-      <div class="memory-match-mode-options">
-        <div class="memory-match-mode-card-btn single-btn" onclick="selectMemoryMatchMode('single')">
-          <div class="mode-icon-circle single-circle">👤</div>
-          <div class="mode-btn-text">
-            <h4>Single Player</h4>
-            <p>Solo brain challenge. Track moves & time.</p>
+      <!-- Top Title Bar -->
+      <div class="mp-popup-head">
+        <div class="mp-popup-brand">
+          <div class="mp-popup-icon-badge" id="mp-modal-badge">🎲</div>
+          <div class="mp-popup-titles">
+            <h3 id="mp-modal-title">Game Setup</h3>
+            <p id="mp-modal-subtitle">Configure your match</p>
           </div>
         </div>
+        <button class="mp-popup-close-btn" onclick="closeGameSetupModal()" title="Close">✕</button>
+      </div>
 
-        <div class="memory-match-mode-card-btn multi-btn" onclick="selectMemoryMatchMode('two_player')">
-          <div class="mode-icon-circle multi-circle">👥</div>
-          <div class="mode-btn-text">
-            <h4>2 Player — Play Together</h4>
-            <p>Pass & Play on 1 phone. Keep turn on match!</p>
-          </div>
+      <!-- Step 1: Mode Switch (Play with Computer vs Local Multiplayer) -->
+      <div class="mp-step-label">
+        <span>1. Choose Mode</span>
+        <span class="mp-tag" id="mp-mode-summary-tag">Play with Computer</span>
+      </div>
+      <div class="mp-mode-toggle-bar">
+        <button class="mp-mode-tab active" id="mp-tab-ai" onclick="switchPopupMainMode('computer')">
+          <span>🤖</span> Play with Computer
+        </button>
+        <button class="mp-mode-tab" id="mp-tab-local" onclick="switchPopupMainMode('local')">
+          <span>👥</span> Local Multiplayer
+        </button>
+      </div>
+
+      <!-- Dynamic Section: AI Difficulty (For Tic Tac Toe & Checkers vs Computer) -->
+      <div id="mp-ai-diff-section" style="display:none;">
+        <div class="mp-step-label">
+          <span>AI Difficulty</span>
+          <span class="mp-tag" id="mp-ai-diff-tag">Hard</span>
+        </div>
+        <div class="mp-chips-grid-3">
+          <button class="mp-chip-btn" id="mp-diff-easy-btn" onclick="setPopupAIDifficulty('easy')">Easy</button>
+          <button class="mp-chip-btn" id="mp-diff-medium-btn" onclick="setPopupAIDifficulty('medium')">Medium</button>
+          <button class="mp-chip-btn active" id="mp-diff-hard-btn" onclick="setPopupAIDifficulty('hard')">Hard</button>
         </div>
       </div>
 
-      <button class="m-btn-close" onclick="closeMemoryMatchModeModal()">Cancel</button>
+      <!-- Dynamic Section: Grid Size / Difficulty for Memory Match -->
+      <div id="mp-memory-diff-section" style="display:none;">
+        <div class="mp-step-label">
+          <span>Grid Difficulty</span>
+          <span class="mp-tag" id="mp-mem-diff-tag">Easy (8 Cards)</span>
+        </div>
+        <div class="mp-chips-grid-3">
+          <button class="mp-chip-btn active" id="mp-mem-chip-easy" onclick="setPopupMemoryDifficulty('easy')">Easy (8)</button>
+          <button class="mp-chip-btn" id="mp-mem-chip-medium" onclick="setPopupMemoryDifficulty('medium')">Medium (12)</button>
+          <button class="mp-chip-btn" id="mp-mem-chip-hard" onclick="setPopupMemoryDifficulty('hard')">Hard (16)</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Opponent / Player Count Selection Cards -->
+      <div class="mp-step-label">
+        <span id="mp-subchoice-header">2. Select Players</span>
+        <span class="mp-tag" id="mp-participants-tag">1 Human + 1 Computer</span>
+      </div>
+      <div class="mp-options-container" id="mp-options-list">
+        <!-- Rendered dynamically by renderPopupOptions() -->
+      </div>
+
+      <!-- Bottom Action Row -->
+      <div class="mp-popup-actions">
+        <button class="mp-btn-secondary" onclick="closeGameSetupModal()">Back</button>
+        <button class="mp-btn-primary" onclick="confirmStartGameFromModal()">
+          <span>Start Game</span> ➔
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- MODAL: DYNAMIC GAME SETUP (LUDO, SNAKES, TTT, CHECKERS) -->
-  <div id="mode-modal">
-    <div class="modal-box">
-      <h3 id="modal-title-text">Match Setup</h3>
-      <p id="modal-desc-text">Kisko kiske saath khelna hai?</p>
-
-      <div class="section-title">
-        <span>1. Match Type:</span>
-        <span class="sub-badge" id="mode-type-badge">Pass & Play</span>
-      </div>
-      <div class="opp-type-row">
-        <button class="opp-chip active" id="type-friends-btn" onclick="setOpponentType(false)">👥 Friends (No AI)</button>
-        <button class="opp-chip" id="type-ai-btn" onclick="setOpponentType(true)">🤖 vs Computer</button>
-      </div>
-
-      <div id="diff-section" style="display:none;">
-        <div class="section-title">
-          <span>AI Difficulty:</span>
-          <span class="sub-badge" id="diff-status-badge">Hard</span>
-        </div>
-        <div class="diff-select-row">
-          <button class="diff-chip" id="diff-easy-btn" onclick="setSharedDifficulty('easy')">Easy</button>
-          <button class="diff-chip" id="diff-med-btn" onclick="setSharedDifficulty('medium')">Medium</button>
-          <button class="diff-chip active" id="diff-hard-btn" onclick="setSharedDifficulty('hard')">Hard</button>
-        </div>
-      </div>
-
-      <div id="ludo-snakes-count-section">
-        <div class="section-title">
-          <span>2. Player Count:</span>
-          <span class="sub-badge" id="count-status-badge">3 Players</span>
-        </div>
-        <div class="count-select-row">
-          <button class="count-chip" id="chip-p-2" onclick="setTargetPlayerCount(2)">👥 2P</button>
-          <button class="count-chip active" id="chip-p-3" onclick="setTargetPlayerCount(3)">👥 3P</button>
-          <button class="count-chip" id="chip-p-4" onclick="setTargetPlayerCount(4)">👥 4P</button>
-        </div>
-      </div>
-
-      <div id="ludo-snakes-color-section">
-        <div class="section-title">
-          <span>3. Choose Colors:</span>
-          <span class="sub-badge" id="color-select-badge">Selected: 3 / 3</span>
-        </div>
-        <div class="color-select-row">
-          <button class="color-chip chip-red selected" id="c-btn-0" onclick="toggleColorSelection(0)">🔴 Red</button>
-          <button class="color-chip chip-green selected" id="c-btn-1" onclick="toggleColorSelection(1)">🟢 Green</button>
-          <button class="color-chip chip-yellow" id="c-btn-2" onclick="toggleColorSelection(2)">🟡 Yellow</button>
-          <button class="color-chip chip-blue selected" id="c-btn-3" onclick="toggleColorSelection(3)">🔵 Blue</button>
-        </div>
-      </div>
-
-      <button class="start-match-btn" onclick="startCustomMatch()">🚀 START MATCH</button>
-      <button class="m-btn-close" onclick="closeModeModal()">Cancel</button>
-    </div>
-  </div>
-
-  <!-- MODAL: WINNER CELEBRATION -->
+  <!-- WINNER CELEBRATION MODAL -->
   <div id="winner-modal">
-    <div class="modal-box">
+    <div class="masplay-popup-card" style="text-align:center; align-items:center;">
+      <div class="mp-popup-glow"></div>
+      <div style="font-size:3rem; margin-bottom:6px;">🏆</div>
       <div class="win-title" id="winner-text">Player 1 Won!</div>
-      <p id="winner-subtext">Match khatam ho gaya.</p>
-      <div style="display:flex; flex-direction:column; gap:8px;" id="winner-actions-container">
-        <button class="start-match-btn" onclick="restartGame()">🔄 Naya Match Shuru Karein</button>
-        <button class="ttt-act-btn" id="winner-change-mode-btn" style="display:none;" onclick="openMemoryMatchModeSelection()">👥 Change Mode</button>
-        <button class="m-btn-close" onclick="showLobby()">◀ Main Menu</button>
+      <p id="winner-subtext" style="font-size:0.8rem; color:#94a3b8; margin-bottom:16px;">Match completed.</p>
+      <div style="display:flex; flex-direction:column; gap:8px; width:100%;" id="winner-actions-container">
+        <button class="mp-btn-primary" style="width:100%;" onclick="restartGame()">🔄 Play Again</button>
+        <button class="mp-btn-secondary" id="winner-change-mode-btn" style="display:none; width:100%;" onclick="closeWinnerModal(); openGameSetupModal(activeGameType)">👥 Change Mode</button>
+        <button class="mp-btn-secondary" style="width:100%;" onclick="closeWinnerModal(); showLobby()">◀ Main Menu</button>
       </div>
     </div>
   </div>
@@ -2403,7 +2470,6 @@
       }
     }
 
-    // Resolves blocked autoplay on first touch without requiring an off/on toggle
     function globalUnlockAudio() {
       const ctx = getAudioContext();
       if (ctx && ctx.state === 'suspended') {
@@ -2475,19 +2541,26 @@
       if (!container) return;
       container.innerHTML = '';
       if (userFavorites.length === 0) {
-        container.innerHTML = `<div style="grid-column:span 2; padding:24px; text-align:center; color:#64748b; font-size:0.85rem;">Koi favorite game nahi hai.<br>Game card par ❤ daba kar add karein!</div>`;
+        container.innerHTML = `<div style="grid-column:span 2; padding:24px; text-align:center; color:#64748b; font-size:0.85rem;">No favorite games yet.<br>Tap ❤ on any game card to bookmark!</div>`;
         return;
       }
       userFavorites.forEach(id => {
         const cardElem = document.querySelector(`.game-card-premium[data-gameid="${id}"]`);
         if (cardElem) {
           const clone = cardElem.cloneNode(true);
-          clone.onclick = () => openModeModal(id);
+          clone.onclick = () => openGameSetupModal(id);
           const favBtn = clone.querySelector('.card-fav-btn');
           if (favBtn) favBtn.onclick = (e) => toggleFav(id, e);
           container.appendChild(clone);
         }
       });
+    }
+
+    function closeWinnerModal() {
+      const winModal = document.getElementById('winner-modal');
+      if (winModal) {
+        winModal.style.display = 'none';
+      }
     }
 
     // --- BOTTOM NAVIGATION ROUTING ---
@@ -2498,6 +2571,11 @@
         if (btn) btn.classList.toggle('active', t === tabName);
       });
 
+      // Always close winner modal and setup modal to prevent leftover backdrop overlay
+      closeWinnerModal();
+      const setupModal = document.getElementById('masplay-game-modal');
+      if (setupModal) setupModal.classList.remove('active');
+
       document.getElementById('lobby-screen').style.display = 'none';
       document.getElementById('favorites-screen').style.display = 'none';
       document.getElementById('settings-screen').style.display = 'none';
@@ -2507,7 +2585,6 @@
       document.getElementById('memory-match-screen').style.display = 'none';
       document.getElementById('back-to-menu-btn').style.display = 'none';
 
-      // Clean up memory match timer when navigating away
       stopMemoryMatchTimer();
 
       if (tabName === 'home') {
@@ -2526,14 +2603,23 @@
       }
     }
 
-    // --- SHARED GAME STATE ---
-    let activeGameType = 'ludo';
-    let targetPlayerCount = 3;
-    let selectedColors = [0, 1, 3];
-    let isOpponentsAI = false;
-    let userMainColor = 3;
+    function showLobby() {
+      closeWinnerModal();
+      navToTab('home');
+    }
 
-    let activePlayers = [0, 1, 3];
+    // =========================================================================
+    // NEW UNIFIED POPUP ARCHITECTURE FOR ALL 5 GAMES
+    // =========================================================================
+    let activeGameType = 'ludo';
+    let popupMainMode = 'computer'; // 'computer' or 'local'
+    let popupOpponentCount = 1;     // 1, 2, or 3 computer opponents (or 2, 3, 4 players for local)
+    let popupAIDifficulty = 'hard';  // 'easy', 'medium', 'hard'
+    let popupMemoryDiff = 'easy';    // 'easy', 'medium', 'hard'
+
+    // Board Game Specific Player Array
+    let activePlayers = [3, 0];      // Player IDs currently playing: [0: Red, 1: Green, 2: Yellow, 3: Blue]
+    let humanPlayers = [3];          // Player IDs that are controlled by humans
     let currentTurnIndex = 0;
     let diceVal = 1;
     let isRolling = false;
@@ -2547,13 +2633,287 @@
     const CS_SNAKE = 450 / 10;
 
     const playerMeta = [
-      { id: 0, name: 'RED', col: '#ef4444', colDark: '#991b1b', startStep: 0 },
-      { id: 1, name: 'GREEN', col: '#22c55e', colDark: '#166534', startStep: 13 },
-      { id: 2, name: 'YELLOW', col: '#eab308', colDark: '#854d0e', startStep: 26 },
-      { id: 3, name: 'BLUE', col: '#3b82f6', colDark: '#1e40af', startStep: 39 }
+      { id: 0, name: 'RED', col: '#ef4444', colDark: '#991b1b', startStep: 0, tokenClass: 'mp-tok-red' },
+      { id: 1, name: 'GREEN', col: '#22c55e', colDark: '#166534', startStep: 13, tokenClass: 'mp-tok-green' },
+      { id: 2, name: 'YELLOW', col: '#eab308', colDark: '#854d0e', startStep: 26, tokenClass: 'mp-tok-yellow' },
+      { id: 3, name: 'BLUE', col: '#3b82f6', colDark: '#1e40af', startStep: 39, tokenClass: 'mp-tok-blue' }
     ];
 
-    // LUDO STATE
+    const gameMetadata = {
+      ludo: {
+        title: "Ludo King",
+        subtitle: "Dice & Token Race Arena",
+        icon: "🎲",
+        hasAI: true,
+        aiOpponents: [
+          { count: 1, title: "1 Human + 1 Computer", subtitle: "Blue (You) vs Red (AI)", tokens: [3, 0] },
+          { count: 2, title: "1 Human + 2 Computers", subtitle: "Blue (You) vs Red & Green (AI)", tokens: [3, 0, 1] },
+          { count: 3, title: "1 Human + 3 Computers", subtitle: "Blue (You) vs Red, Green & Yellow", tokens: [3, 0, 1, 2] }
+        ],
+        localModes: [
+          { count: 2, title: "2 Players", subtitle: "Pass & Play on 1 Device (Blue & Green)", tokens: [3, 1] },
+          { count: 3, title: "3 Players", subtitle: "Pass & Play on 1 Device (Blue, Red, Green)", tokens: [3, 0, 1] },
+          { count: 4, title: "4 Players", subtitle: "All 4 Colors on 1 Device", tokens: [3, 0, 1, 2] }
+        ]
+      },
+      snakes: {
+        title: "Snakes & Ladders",
+        subtitle: "Climb & Slide Board Arena",
+        icon: "🐍",
+        hasAI: true,
+        aiOpponents: [
+          { count: 1, title: "1 Human + 1 Computer", subtitle: "Blue (You) vs Red (AI)", tokens: [3, 0] },
+          { count: 2, title: "1 Human + 2 Computers", subtitle: "Blue (You) vs Red & Green (AI)", tokens: [3, 0, 1] },
+          { count: 3, title: "1 Human + 3 Computers", subtitle: "Blue (You) vs Red, Green & Yellow", tokens: [3, 0, 1, 2] }
+        ],
+        localModes: [
+          { count: 2, title: "2 Players", subtitle: "Pass & Play on 1 Device (Blue & Green)", tokens: [3, 1] },
+          { count: 3, title: "3 Players", subtitle: "Pass & Play on 1 Device (Blue, Red, Green)", tokens: [3, 0, 1] },
+          { count: 4, title: "4 Players", subtitle: "All 4 Tokens on 1 Device", tokens: [3, 0, 1, 2] }
+        ]
+      },
+      tictactoe: {
+        title: "Tic Tac Toe",
+        subtitle: "Classic 3x3 Grid Duel",
+        icon: "⭕",
+        hasAI: true,
+        aiOpponents: [
+          { count: 1, title: "Player X vs Computer O", subtitle: "Smart AI Bot Opponent", tokens: [3, 0] }
+        ],
+        localModes: [
+          { count: 2, title: "2 Players Duel", subtitle: "Player X vs Player O on 1 Device", tokens: [3, 0] }
+        ]
+      },
+      checkers: {
+        title: "Checkers",
+        subtitle: "Classic Draughts Strategy",
+        icon: "👑",
+        hasAI: true,
+        aiOpponents: [
+          { count: 1, title: "Red (You) vs Black (Computer)", subtitle: "Challenging Minimax AI", tokens: [0] }
+        ],
+        localModes: [
+          { count: 2, title: "2 Players Pass & Play", subtitle: "Red vs Black on 1 Device", tokens: [0] }
+        ]
+      },
+      memorymatch: {
+        title: "Memory Match",
+        subtitle: "Card Pair Flipping Arena",
+        icon: "🦁",
+        hasAI: false,
+        aiOpponents: [
+          { count: 1, title: "Single Player Challenge", subtitle: "Solo Brain Trainer. Track moves & time.", tokens: [] }
+        ],
+        localModes: [
+          { count: 2, title: "2 Players Pass & Play", subtitle: "Turn-based match duel on 1 Device", tokens: [] }
+        ]
+      }
+    };
+
+    function openGameSetupModal(gameType) {
+      triggerHaptic(20);
+      closeWinnerModal();
+      activeGameType = gameType;
+
+      const meta = gameMetadata[gameType];
+      document.getElementById('mp-modal-badge').innerText = meta.icon;
+      document.getElementById('mp-modal-title').innerText = meta.title;
+      document.getElementById('mp-modal-subtitle').innerText = meta.subtitle;
+
+      if (gameType === 'memorymatch') {
+        document.getElementById('mp-tab-ai').innerHTML = `<span>👤</span> Solo Challenge`;
+        document.getElementById('mp-tab-local').innerHTML = `<span>👥</span> 2-Player Duel`;
+      } else {
+        document.getElementById('mp-tab-ai').innerHTML = `<span>🤖</span> Play with Computer`;
+        document.getElementById('mp-tab-local').innerHTML = `<span>👥</span> Local Multiplayer`;
+      }
+
+      popupMainMode = 'computer';
+      popupOpponentCount = (gameType === 'ludo' || gameType === 'snakes') ? 1 : (gameType === 'memorymatch' ? 1 : 1);
+
+      updateModalUI();
+      document.getElementById('masplay-game-modal').classList.add('active');
+    }
+
+    function closeGameSetupModal() {
+      triggerHaptic(15);
+      document.getElementById('masplay-game-modal').classList.remove('active');
+    }
+
+    function handleModalOverlayClick(e) {
+      if (e.target.id === 'masplay-game-modal') {
+        closeGameSetupModal();
+      }
+    }
+
+    function switchPopupMainMode(mode) {
+      triggerHaptic(15);
+      popupMainMode = mode;
+      if (mode === 'computer') {
+        popupOpponentCount = 1;
+      } else {
+        popupOpponentCount = 2;
+      }
+      updateModalUI();
+    }
+
+    function setPopupAIDifficulty(diff) {
+      triggerHaptic(15);
+      popupAIDifficulty = diff;
+      tttDifficulty = diff;
+      chkDifficulty = diff;
+      document.querySelectorAll('#mp-ai-diff-section .mp-chip-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`mp-diff-${diff}-btn`);
+      if (activeBtn) activeBtn.classList.add('active');
+      document.getElementById('mp-ai-diff-tag').innerText = diff.charAt(0).toUpperCase() + diff.slice(1);
+    }
+
+    function setPopupMemoryDifficulty(diff) {
+      triggerHaptic(15);
+      popupMemoryDiff = diff;
+      memoryMatchDifficulty = diff;
+      document.querySelectorAll('#mp-memory-diff-section .mp-chip-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`mp-mem-chip-${diff}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      const labelMap = { easy: 'Easy (8 Cards)', medium: 'Medium (12 Cards)', hard: 'Hard (16 Cards)' };
+      document.getElementById('mp-mem-diff-tag').innerText = labelMap[diff];
+    }
+
+    function selectPopupOption(count) {
+      triggerHaptic(15);
+      popupOpponentCount = count;
+      renderPopupOptions();
+    }
+
+    function updateModalUI() {
+      const isAI = (popupMainMode === 'computer');
+      document.getElementById('mp-tab-ai').classList.toggle('active', isAI);
+      document.getElementById('mp-tab-local').classList.toggle('active', !isAI);
+
+      if (activeGameType === 'memorymatch') {
+        document.getElementById('mp-mode-summary-tag').innerText = isAI ? "Solo Challenge" : "2-Player Duel";
+        document.getElementById('mp-subchoice-header').innerText = isAI ? "2. Single Player Mode" : "2. Pass & Play Mode";
+      } else {
+        document.getElementById('mp-mode-summary-tag').innerText = isAI ? "Play with Computer" : "Local Multiplayer";
+        document.getElementById('mp-subchoice-header').innerText = isAI ? "2. Choose Computer Opponents" : "2. Choose Player Count";
+      }
+
+      const showAIDiff = (isAI && (activeGameType === 'tictactoe' || activeGameType === 'checkers'));
+      document.getElementById('mp-ai-diff-section').style.display = showAIDiff ? 'block' : 'none';
+
+      const showMemDiff = (activeGameType === 'memorymatch');
+      document.getElementById('mp-memory-diff-section').style.display = showMemDiff ? 'block' : 'none';
+
+      renderPopupOptions();
+    }
+
+    function renderPopupOptions() {
+      const container = document.getElementById('mp-options-list');
+      container.innerHTML = '';
+
+      const meta = gameMetadata[activeGameType];
+      const options = (popupMainMode === 'computer') ? meta.aiOpponents : meta.localModes;
+
+      options.forEach(opt => {
+        const isSelected = (popupOpponentCount === opt.count);
+        const card = document.createElement('div');
+        card.className = `mp-option-card ${isSelected ? 'selected' : ''}`;
+        card.onclick = () => selectPopupOption(opt.count);
+
+        let tokensHTML = '';
+        if (opt.tokens && opt.tokens.length > 0) {
+          tokensHTML = `<div class="mp-token-preview-row">` +
+            opt.tokens.map(tId => `<span class="mp-mini-token ${playerMeta[tId].tokenClass}" title="${playerMeta[tId].name}"></span>`).join('') +
+            `</div>`;
+        }
+
+        card.innerHTML = `
+          <div class="mp-opt-info">
+            <div class="mp-opt-radio"></div>
+            <div class="mp-opt-texts">
+              <h4>${opt.title}</h4>
+              <p>${opt.subtitle}</p>
+            </div>
+          </div>
+          ${tokensHTML}
+        `;
+        container.appendChild(card);
+      });
+
+      const selectedOpt = options.find(o => o.count === popupOpponentCount) || options[0];
+      if (selectedOpt) {
+        document.getElementById('mp-participants-tag').innerText = selectedOpt.title;
+      }
+    }
+
+    function confirmStartGameFromModal() {
+      triggerHaptic(30);
+      closeGameSetupModal();
+
+      document.getElementById('lobby-screen').style.display = 'none';
+      document.getElementById('favorites-screen').style.display = 'none';
+      document.getElementById('settings-screen').style.display = 'none';
+      document.getElementById('back-to-menu-btn').style.display = 'block';
+
+      if (activeGameType === 'memorymatch') {
+        document.getElementById('play-screen').style.display = 'none';
+        document.getElementById('ttt-screen').style.display = 'none';
+        document.getElementById('checkers-screen').style.display = 'none';
+        document.getElementById('memory-match-screen').style.display = 'flex';
+
+        memoryMatchMode = (popupMainMode === 'computer') ? 'single' : 'two_player';
+        restartMemoryMatchGame();
+      } else if (activeGameType === 'tictactoe') {
+        document.getElementById('play-screen').style.display = 'none';
+        document.getElementById('checkers-screen').style.display = 'none';
+        document.getElementById('memory-match-screen').style.display = 'none';
+        document.getElementById('ttt-screen').style.display = 'flex';
+
+        isOpponentsAI = (popupMainMode === 'computer');
+        startTTTGame();
+      } else if (activeGameType === 'checkers') {
+        document.getElementById('play-screen').style.display = 'none';
+        document.getElementById('ttt-screen').style.display = 'none';
+        document.getElementById('memory-match-screen').style.display = 'none';
+        document.getElementById('checkers-screen').style.display = 'flex';
+
+        isOpponentsAI = (popupMainMode === 'computer');
+        startCheckersGame();
+      } else {
+        document.getElementById('ttt-screen').style.display = 'none';
+        document.getElementById('checkers-screen').style.display = 'none';
+        document.getElementById('memory-match-screen').style.display = 'none';
+        document.getElementById('play-screen').style.display = 'flex';
+
+        if (popupMainMode === 'computer') {
+          isOpponentsAI = true;
+          humanPlayers = [3];
+          if (popupOpponentCount === 1) {
+            activePlayers = [3, 0];
+          } else if (popupOpponentCount === 2) {
+            activePlayers = [3, 0, 1];
+          } else {
+            activePlayers = [3, 0, 1, 2];
+          }
+        } else {
+          isOpponentsAI = false;
+          if (popupOpponentCount === 2) {
+            activePlayers = [3, 1];
+          } else if (popupOpponentCount === 3) {
+            activePlayers = [3, 0, 1];
+          } else {
+            activePlayers = [3, 0, 1, 2];
+          }
+          humanPlayers = [...activePlayers];
+        }
+
+        restartGame();
+      }
+    }
+
+    // =========================================================================
+    // LUDO ENGINE WITH FULL MULTI-OPPONENT & LOCAL MULTIPLAYER SUPPORT
+    // =========================================================================
     let tokens = [
       [{step: -1}, {step: -1}, {step: -1}, {step: -1}],
       [{step: -1}, {step: -1}, {step: -1}, {step: -1}],
@@ -2588,174 +2948,8 @@
     const laddersMap = { 4: 14, 9: 31, 20: 38, 28: 84, 40: 59, 51: 67, 63: 81, 71: 91 };
     const snakesMap = { 17: 7, 54: 34, 62: 19, 64: 60, 87: 24, 93: 73, 95: 75, 99: 78 };
 
-    // TIC TAC TOE STATE
-    let tttBoard = Array(9).fill(null);
-    let tttCurrentTurn = 'X';
-    let tttGameOver = false;
-    let tttScores = { X: 0, O: 0, draws: 0 };
-    let tttDifficulty = 'hard';
-    let tttWinningLine = null;
-    const tttWinPatterns = [
-      [0, 1, 2], [3, 4, 5], [6, 7, 8],
-      [0, 3, 6], [1, 4, 7], [2, 5, 8],
-      [0, 4, 8], [2, 4, 6]
-    ];
-
-    // CHECKERS STATE
-    const chkCv = document.getElementById('checkers-stage');
-    const chkCtx = chkCv.getContext('2d');
-    const CHK_CS = 400 / 8;
-    let chkBoard = [];
-    let chkTurn = 'red';
-    let chkSelectedSquare = null;
-    let chkValidMoves = [];
-    let chkAllCaptureMoves = [];
-    let chkGameOver = false;
-    let chkIsMultiJumping = false;
-    let chkMultiJumpPiece = null;
-    let chkDifficulty = 'hard';
-
-    // SETUP MODAL
-    function showLobby() {
-      navToTab('home');
-    }
-
-    function openModeModal(gameType) {
-      triggerHaptic(20);
-      activeGameType = gameType;
-
-      if (gameType === 'memorymatch') {
-        openMemoryMatchModeSelection();
-        return;
-      }
-
-      const titles = {
-        ludo: "Ludo King 3D Setup",
-        snakes: "Snakes & Ladders Setup",
-        tictactoe: "Tic Tac Toe Setup",
-        checkers: "Checkers (Draughts) Setup"
-      };
-      document.getElementById('modal-title-text').innerText = titles[gameType];
-
-      const isTwoPlayerOnly = (gameType === 'tictactoe' || gameType === 'checkers');
-      document.getElementById('ludo-snakes-count-section').style.display = isTwoPlayerOnly ? 'none' : 'block';
-      document.getElementById('ludo-snakes-color-section').style.display = isTwoPlayerOnly ? 'none' : 'block';
-      document.getElementById('diff-section').style.display = (isTwoPlayerOnly && isOpponentsAI) ? 'block' : 'none';
-
-      document.getElementById('mode-modal').style.display = 'flex';
-      refreshModalUI();
-    }
-
-    function closeModeModal() {
-      document.getElementById('mode-modal').style.display = 'none';
-    }
-
-    function setOpponentType(isAI) {
-      triggerHaptic(15);
-      isOpponentsAI = isAI;
-      document.getElementById('type-friends-btn').classList.toggle('active', !isAI);
-      document.getElementById('type-ai-btn').classList.toggle('active', isAI);
-      document.getElementById('mode-type-badge').innerText = isAI ? "vs Computer" : "Pass & Play";
-
-      const isTwoPlayerOnly = (activeGameType === 'tictactoe' || activeGameType === 'checkers');
-      document.getElementById('diff-section').style.display = (isTwoPlayerOnly && isAI) ? 'block' : 'none';
-    }
-
-    function setSharedDifficulty(diff) {
-      triggerHaptic(15);
-      tttDifficulty = diff;
-      chkDifficulty = diff;
-      document.querySelectorAll('.diff-chip').forEach(c => c.classList.remove('active'));
-      const activeEl = document.getElementById(`diff-${diff.slice(0, 4)}-btn`) || document.getElementById(`diff-${diff}-btn`);
-      if (activeEl) activeEl.classList.add('active');
-      document.getElementById('diff-status-badge').innerText = diff.charAt(0).toUpperCase() + diff.slice(1);
-    }
-
-    function setTargetPlayerCount(count) {
-      triggerHaptic(15);
-      targetPlayerCount = count;
-      document.querySelectorAll('.count-chip').forEach(c => c.classList.remove('active'));
-      document.getElementById(`chip-p-${count}`).classList.add('active');
-
-      if (count === 2) selectedColors = [3, 1];
-      else if (count === 3) selectedColors = [3, 0, 1];
-      else if (count === 4) selectedColors = [3, 0, 1, 2];
-
-      refreshModalUI();
-    }
-
-    function toggleColorSelection(colorIdx) {
-      triggerHaptic(15);
-      if (selectedColors.includes(colorIdx)) {
-        if (selectedColors.length > 2) {
-          selectedColors = selectedColors.filter(c => c !== colorIdx);
-        }
-      } else {
-        if (selectedColors.length < targetPlayerCount) {
-          selectedColors.push(colorIdx);
-        } else {
-          selectedColors.shift();
-          selectedColors.push(colorIdx);
-        }
-      }
-      refreshModalUI();
-    }
-
-    function refreshModalUI() {
-      document.getElementById('count-status-badge').innerText = `${targetPlayerCount} Players`;
-      document.getElementById('color-select-badge').innerText = `Selected: ${selectedColors.length} / ${targetPlayerCount}`;
-      document.getElementById('mode-type-badge').innerText = isOpponentsAI ? "vs Computer" : "Pass & Play";
-
-      document.getElementById('type-friends-btn').classList.toggle('active', !isOpponentsAI);
-      document.getElementById('type-ai-btn').classList.toggle('active', isOpponentsAI);
-
-      for (let i = 0; i < 4; i++) {
-        const btn = document.getElementById(`c-btn-${i}`);
-        btn.classList.toggle('selected', selectedColors.includes(i));
-      }
-    }
-
-    function startCustomMatch() {
-      triggerHaptic(30);
-      closeModeModal();
-      document.getElementById('lobby-screen').style.display = 'none';
-      document.getElementById('favorites-screen').style.display = 'none';
-      document.getElementById('settings-screen').style.display = 'none';
-      document.getElementById('back-to-menu-btn').style.display = 'block';
-
-      if (activeGameType === 'tictactoe') {
-        document.getElementById('play-screen').style.display = 'none';
-        document.getElementById('checkers-screen').style.display = 'none';
-        document.getElementById('memory-match-screen').style.display = 'none';
-        document.getElementById('ttt-screen').style.display = 'flex';
-        startTTTGame();
-      } else if (activeGameType === 'checkers') {
-        document.getElementById('play-screen').style.display = 'none';
-        document.getElementById('ttt-screen').style.display = 'none';
-        document.getElementById('memory-match-screen').style.display = 'none';
-        document.getElementById('checkers-screen').style.display = 'flex';
-        startCheckersGame();
-      } else {
-        if (selectedColors.length !== targetPlayerCount) {
-          alert(`Kripya poore ${targetPlayerCount} rang chunein!`);
-          return;
-        }
-
-        const orderPreference = [3, 0, 1, 2];
-        activePlayers = orderPreference.filter(id => selectedColors.includes(id));
-        userMainColor = activePlayers[0];
-
-        document.getElementById('ttt-screen').style.display = 'none';
-        document.getElementById('checkers-screen').style.display = 'none';
-        document.getElementById('memory-match-screen').style.display = 'none';
-        document.getElementById('play-screen').style.display = 'flex';
-
-        restartGame();
-      }
-    }
-
     function restartGame() {
-      document.getElementById('winner-modal').style.display = 'none';
+      closeWinnerModal();
 
       if (activeGameType === 'memorymatch') {
         restartMemoryMatchGame();
@@ -2797,10 +2991,7 @@
 
     function isHumanTurn() {
       const cur = getCurrentPlayer();
-      if (isOpponentsAI) {
-        return cur === userMainColor;
-      }
-      return true;
+      return humanPlayers.includes(cur);
     }
 
     function getPlayerProgress(p) {
@@ -2828,7 +3019,7 @@
 
         if (activePlayers.includes(p)) {
           box.style.display = 'flex';
-          const isAI = (isOpponentsAI && p !== userMainColor);
+          const isAI = !humanPlayers.includes(p);
           nameLabel.innerText = `${playerMeta[p].name}${isAI ? ' (AI)' : ''}`;
           pctLabel.innerText = (activeGameType === 'snakes') ? `Sq ${snakePositions[p]} (${snakePositions[p]}%)` : `${getPlayerProgress(p)}%`;
 
@@ -2845,7 +3036,7 @@
 
       const meta = playerMeta[cur];
       const human = isHumanTurn();
-      document.getElementById('game-hint').innerText = `${meta.name}${human ? '' : ' (Computer)'} ki baari hai. ${human ? 'Apne dice par tap karein!' : 'Computer roll kar raha hai...'}`;
+      document.getElementById('game-hint').innerText = `${meta.name}${human ? '' : ' (Computer)'}'s turn. ${human ? 'Tap your dice to roll!' : 'Computer is rolling...'}`;
     }
 
     function handleDiceClick(playerIdx) {
@@ -2934,7 +3125,7 @@
           setTimeout(() => startLudoStepMovement(chosen), 500);
         } else {
           waitingForTokenClick = true;
-          document.getElementById('game-hint').innerText = "Apni goti par tap karein jise aage badhana hai!";
+          document.getElementById('game-hint').innerText = "Tap any highlighted token to move forward!";
           renderBoard();
         }
       }
@@ -3002,8 +3193,8 @@
       const won = tokens[cur].every(tok => tok.step >= 56);
       if (won) {
         document.getElementById('winner-text').innerText = `${playerMeta[cur].name} Won Ludo King!`;
-        document.getElementById('winner-subtext').innerText = "100% Progress Complete! Saari gotiyan Home pahunch gayi.";
-        document.getElementById('winner-change-mode-btn').style.display = 'none';
+        document.getElementById('winner-subtext').innerText = "All 4 tokens reached home safely!";
+        document.getElementById('winner-change-mode-btn').style.display = 'block';
         document.getElementById('winner-modal').style.display = 'flex';
         playBeep(750, 'triangle', 0.4);
         triggerHaptic(120);
@@ -3016,7 +3207,7 @@
       updateOutsideDicesUI();
 
       if (diceVal === 6 || hasCut) {
-        document.getElementById('game-hint').innerText = `${playerMeta[cur].name} ko EXTRA ROLL mila!`;
+        document.getElementById('game-hint').innerText = `${playerMeta[cur].name} gets an EXTRA ROLL!`;
         checkIfAITurn();
       } else {
         setTimeout(nextTurn, 650);
@@ -3030,7 +3221,7 @@
 
       if (currentPos + diceVal > 100) {
         playBeep(220, 'sawtooth', 0.15);
-        document.getElementById('game-hint').innerText = `100 par pahunchne ke liye exact ${100 - currentPos} chahiye!`;
+        document.getElementById('game-hint').innerText = `Need exact ${100 - currentPos} to reach 100!`;
         setTimeout(nextTurn, 700);
         return;
       }
@@ -3059,7 +3250,7 @@
 
       if (laddersMap[pos]) {
         const dest = laddersMap[pos];
-        document.getElementById('game-hint').innerText = `WOOHOO! Seedhi mili: Square ${pos} ➔ ${dest}!`;
+        document.getElementById('game-hint').innerText = `LADDER! Climbing from Square ${pos} ➔ ${dest}!`;
         playBeep(750, 'triangle', 0.25);
         triggerHaptic(50);
         setTimeout(() => {
@@ -3074,7 +3265,7 @@
 
       if (snakesMap[pos]) {
         const dest = snakesMap[pos];
-        document.getElementById('game-hint').innerText = `OH NO! Saanp ne kaat liya: Square ${pos} ➔ ${dest}!`;
+        document.getElementById('game-hint').innerText = `SNAKE BITE! Sliding down: Square ${pos} ➔ ${dest}!`;
         playBeep(160, 'sawtooth', 0.35);
         triggerHaptic(80);
         setTimeout(() => {
@@ -3096,8 +3287,8 @@
 
       if (snakePositions[cur] === 100) {
         document.getElementById('winner-text').innerText = `${playerMeta[cur].name} Won Snakes & Ladders!`;
-        document.getElementById('winner-subtext').innerText = "Square 100 par sabse pehle pahuchein!";
-        document.getElementById('winner-change-mode-btn').style.display = 'none';
+        document.getElementById('winner-subtext').innerText = "Reached Square 100 first!";
+        document.getElementById('winner-change-mode-btn').style.display = 'block';
         document.getElementById('winner-modal').style.display = 'flex';
         playBeep(780, 'triangle', 0.4);
         triggerHaptic(120);
@@ -3107,7 +3298,7 @@
       }
 
       if (diceVal === 6) {
-        document.getElementById('game-hint').innerText = `${playerMeta[cur].name} ko EXTRA ROLL mila (Dice 6)!`;
+        document.getElementById('game-hint').innerText = `${playerMeta[cur].name} gets an EXTRA ROLL (Rolled 6)!`;
         checkIfAITurn();
       } else {
         setTimeout(nextTurn, 650);
@@ -3139,7 +3330,6 @@
       }
     });
 
-    // LUDO CLUSTERING
     function getTokenDrawPos(pIdx, tIdx) {
       const t = tokens[pIdx][tIdx];
       if (t.step === -1) {
@@ -3583,7 +3773,21 @@
       ctx.restore();
     }
 
+    // =========================================================================
     // TIC TAC TOE GAMEPLAY
+    // =========================================================================
+    let tttBoard = Array(9).fill(null);
+    let tttCurrentTurn = 'X';
+    let tttGameOver = false;
+    let tttScores = { X: 0, O: 0, draws: 0 };
+    let tttDifficulty = 'hard';
+    let tttWinningLine = null;
+    const tttWinPatterns = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8],
+      [0, 3, 6], [1, 4, 7], [2, 5, 8],
+      [0, 4, 8], [2, 4, 6]
+    ];
+
     function startTTTGame() {
       document.getElementById('ttt-lbl-o').innerText = isOpponentsAI ? "COMPUTER (O)" : "PLAYER O";
       resetTTTRound();
@@ -3618,7 +3822,7 @@
         cell.className = 'ttt-cell';
       }
 
-      document.getElementById('ttt-turn-banner').innerText = "Player X ki baari hai (Tap any cell)";
+      document.getElementById('ttt-turn-banner').innerText = "Player X's Turn (Tap any cell)";
       document.getElementById('ttt-turn-banner').style.color = "#38bdf8";
       updateTTTScoreboard();
     }
@@ -3656,12 +3860,12 @@
         triggerHaptic(80);
 
         const winnerLabel = (player === 'O' && isOpponentsAI) ? "Computer (O)" : `Player ${player}`;
-        document.getElementById('ttt-turn-banner').innerText = `🎉 ${winnerLabel} Jeet Gaya!`;
+        document.getElementById('ttt-turn-banner').innerText = `🎉 ${winnerLabel} Won!`;
         document.getElementById('ttt-turn-banner').style.color = "#fbbf24";
 
         document.getElementById('winner-text').innerText = `${winnerLabel} Won!`;
         document.getElementById('winner-subtext').innerText = "Tic Tac Toe match complete!";
-        document.getElementById('winner-change-mode-btn').style.display = 'none';
+        document.getElementById('winner-change-mode-btn').style.display = 'block';
         document.getElementById('winner-modal').style.display = 'flex';
         return;
       }
@@ -3677,15 +3881,15 @@
         document.getElementById('ttt-turn-banner').style.color = "#94a3b8";
 
         document.getElementById('winner-text').innerText = "Match Draw (Tie)!";
-        document.getElementById('winner-subtext').innerText = "Sabhi 9 cells bhar gaye hain!";
-        document.getElementById('winner-change-mode-btn').style.display = 'none';
+        document.getElementById('winner-subtext').innerText = "All 9 cells filled!";
+        document.getElementById('winner-change-mode-btn').style.display = 'block';
         document.getElementById('winner-modal').style.display = 'flex';
         return;
       }
 
       tttCurrentTurn = (tttCurrentTurn === 'X') ? 'O' : 'X';
       const nextLabel = (tttCurrentTurn === 'O' && isOpponentsAI) ? "Computer (O)" : `Player ${tttCurrentTurn}`;
-      document.getElementById('ttt-turn-banner').innerText = `${nextLabel} ki baari hai...`;
+      document.getElementById('ttt-turn-banner').innerText = `${nextLabel}'s turn...`;
       document.getElementById('ttt-turn-banner').style.color = (tttCurrentTurn === 'X') ? "#38bdf8" : "#f43f5e";
       updateTTTScoreboard();
     }
@@ -3766,7 +3970,22 @@
       }
     }
 
+    // =========================================================================
     // CHECKERS ENGINE
+    // =========================================================================
+    const chkCv = document.getElementById('checkers-stage');
+    const chkCtx = chkCv.getContext('2d');
+    const CHK_CS = 400 / 8;
+    let chkBoard = [];
+    let chkTurn = 'red';
+    let chkSelectedSquare = null;
+    let chkValidMoves = [];
+    let chkAllCaptureMoves = [];
+    let chkGameOver = false;
+    let chkIsMultiJumping = false;
+    let chkMultiJumpPiece = null;
+    let chkDifficulty = 'hard';
+
     function startCheckersGame() {
       document.getElementById('chk-name-black').innerText = isOpponentsAI ? "BLACK (AI)" : "BLACK";
       resetCheckersMatch();
@@ -3818,10 +4037,10 @@
       const turnLabel = (chkTurn === 'red') ? "RED" : (isOpponentsAI ? "BLACK (Computer)" : "BLACK");
 
       if (chkAllCaptureMoves.length > 0) {
-        document.getElementById('chk-status-banner').innerText = `⚡ ${turnLabel} ki baari: Goti katna zaroori hai (Mandatory Jump)!`;
+        document.getElementById('chk-status-banner').innerText = `⚡ ${turnLabel}'s Turn: Mandatory Jump!`;
         document.getElementById('chk-status-banner').style.color = "#f43f5e";
       } else {
-        document.getElementById('chk-status-banner').innerText = `${turnLabel} ki baari hai (Goti select karein)`;
+        document.getElementById('chk-status-banner').innerText = `${turnLabel}'s turn (Select piece)`;
         document.getElementById('chk-status-banner').style.color = (chkTurn === 'red') ? "#ef4444" : "#94a3b8";
       }
     }
@@ -3858,7 +4077,7 @@
           const pieceHasCapture = chkAllCaptureMoves.some(m => m.fromR === r && m.fromC === c);
           if (!pieceHasCapture) {
             playBeep(200, 'sawtooth', 0.12);
-            document.getElementById('chk-status-banner').innerText = "⚠️ Kripya wahi goti chunein jisse opponent cut ho raha hai!";
+            document.getElementById('chk-status-banner').innerText = "⚠️ You must select a piece that can capture!";
             return;
           }
           chkSelectedSquare = { r, c };
@@ -3921,7 +4140,7 @@
           chkMultiJumpPiece = { r: move.toR, c: move.toC };
           chkSelectedSquare = { r: move.toR, c: move.toC };
           chkValidMoves = furtherJumps;
-          document.getElementById('chk-status-banner').innerText = "🔥 Combo Jump: Ek aur goti cut karein!";
+          document.getElementById('chk-status-banner').innerText = "🔥 Multi-Jump: Take another piece!";
           renderCheckersBoard();
 
           if (chkTurn === 'black' && isOpponentsAI) {
@@ -3948,10 +4167,10 @@
         playBeep(850, 'triangle', 0.5);
         triggerHaptic(120);
 
-        document.getElementById('chk-status-banner').innerText = `🏆 ${winner} Jeet Gaya!`;
+        document.getElementById('chk-status-banner').innerText = `🏆 ${winner} Won Checkers!`;
         document.getElementById('winner-text').innerText = `${winner} Won Checkers!`;
-        document.getElementById('winner-subtext').innerText = "Opponent ke paas koi valid chaal nahi bachi!";
-        document.getElementById('winner-change-mode-btn').style.display = 'none';
+        document.getElementById('winner-subtext').innerText = "Opponent has no remaining legal moves!";
+        document.getElementById('winner-change-mode-btn').style.display = 'block';
         document.getElementById('winner-modal').style.display = 'flex';
         return;
       }
@@ -4276,15 +4495,15 @@
     }
 
     // =========================================================================
-    // 5TH GAME: MEMORY MATCH ENGINE (SINGLE PLAYER + 2-PLAYER LOCAL MULTIPLAYER)
+    // 5TH GAME: MEMORY MATCH ENGINE (SOLO + 2-PLAYER LOCAL MULTIPLAYER)
     // =========================================================================
     const memoryMatchIcons = [
       '🐼', '🦁', '🐸', '🐵', '🐱', '🐶', '🦋', '🐰',
       '🍎', '🍓', '🍉', '🚗', '🚀', '⭐', '⚽', '🎈'
     ];
 
-    let memoryMatchMode = 'single'; // 'single' or 'two_player'
-    let memoryMatchDifficulty = 'easy'; // 'easy' (4 pairs), 'medium' (6 pairs), 'hard' (8 pairs)
+    let memoryMatchMode = 'single';
+    let memoryMatchDifficulty = 'easy';
     let memoryMatchCards = [];
     let memoryMatchFlippedCards = [];
     let memoryMatchMatchedCount = 0;
@@ -4294,40 +4513,10 @@
     let memoryMatchIsLocked = false;
     let memoryMatchGameOver = false;
 
-    // Single-Player Specific State
     let memoryMatchMoves = 0;
-
-    // 2-Player Multiplayer Specific State
-    let memoryMatch2PCurrentTurn = 1; // 1 or 2
+    let memoryMatch2PCurrentTurn = 1;
     let memoryMatch2PScores = { 1: 0, 2: 0 };
     let memoryMatch2PMoves = { 1: 0, 2: 0 };
-
-    function openMemoryMatchModeSelection() {
-      triggerHaptic(20);
-      document.getElementById('winner-modal').style.display = 'none';
-      document.getElementById('memory-match-mode-modal').style.display = 'flex';
-    }
-
-    function closeMemoryMatchModeModal() {
-      document.getElementById('memory-match-mode-modal').style.display = 'none';
-    }
-
-    function selectMemoryMatchMode(mode) {
-      triggerHaptic(25);
-      memoryMatchMode = mode;
-      closeMemoryMatchModeModal();
-
-      document.getElementById('lobby-screen').style.display = 'none';
-      document.getElementById('favorites-screen').style.display = 'none';
-      document.getElementById('settings-screen').style.display = 'none';
-      document.getElementById('play-screen').style.display = 'none';
-      document.getElementById('ttt-screen').style.display = 'none';
-      document.getElementById('checkers-screen').style.display = 'none';
-      document.getElementById('back-to-menu-btn').style.display = 'block';
-      document.getElementById('memory-match-screen').style.display = 'flex';
-
-      restartMemoryMatchGame();
-    }
 
     function setMemoryMatchDifficulty(diff) {
       if (memoryMatchDifficulty === diff && memoryMatchCards.length > 0) return;
@@ -4341,10 +4530,6 @@
       restartMemoryMatchGame();
     }
 
-    function startMemoryMatchGame() {
-      restartMemoryMatchGame();
-    }
-
     function restartMemoryMatchGame() {
       stopMemoryMatchTimer();
       memoryMatchFlippedCards = [];
@@ -4353,10 +4538,7 @@
       memoryMatchIsLocked = false;
       memoryMatchGameOver = false;
 
-      // Reset single-player metrics
       memoryMatchMoves = 0;
-
-      // Reset 2-player metrics
       memoryMatch2PCurrentTurn = 1;
       memoryMatch2PScores = { 1: 0, 2: 0 };
       memoryMatch2PMoves = { 1: 0, 2: 0 };
@@ -4381,7 +4563,6 @@
         cardList.push({ id: i * 2 + 1, icon: icon, pairId: i, isMatched: false, matchedBy: null });
       });
 
-      // Fisher-Yates shuffle
       for (let i = cardList.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [cardList[i], cardList[j]] = [cardList[j], cardList[i]];
@@ -4418,8 +4599,6 @@
 
       const cardEl = document.getElementById(`mem-card-${index}`);
       if (cardEl.classList.contains('is-flipped')) return;
-
-      // Prevent taps if 2 cards already face-up
       if (memoryMatchFlippedCards.length >= 2) return;
 
       triggerHaptic(18);
@@ -4439,7 +4618,6 @@
 
         const [first, second] = memoryMatchFlippedCards;
         if (first.card.pairId === second.card.pairId) {
-          // MATCH FOUND!
           first.card.isMatched = true;
           second.card.isMatched = true;
           memoryMatchMatchedCount++;
@@ -4472,16 +4650,14 @@
             if (memoryMatchMatchedCount === memoryMatchTotalPairs) {
               handleMemoryMatchVictory();
             } else if (memoryMatchMode === 'two_player') {
-              // Keeps the turn on a match
               const banner = document.getElementById('memory-match-turn-banner');
               if (banner) {
-                banner.innerText = `✨ Match! Player ${activeTurnAtMatch} earns 1 pt & keeps the turn!`;
+                banner.innerText = `✨ Match! Player ${activeTurnAtMatch} earns 1 pt & keeps turn!`;
                 banner.style.color = activeTurnAtMatch === 1 ? '#38bdf8' : '#f43f5e';
               }
             }
           }, 400);
         } else {
-          // MISMATCH
           setTimeout(() => {
             playBeep(180, 'sawtooth', 0.18);
             triggerHaptic(40);
@@ -4496,7 +4672,6 @@
               memoryMatchFlippedCards = [];
 
               if (memoryMatchMode === 'two_player') {
-                // Turn passes to the next player
                 memoryMatch2PCurrentTurn = (memoryMatch2PCurrentTurn === 1) ? 2 : 1;
               }
 
@@ -4523,7 +4698,6 @@
         }
         document.getElementById('memory-match-accuracy').innerText = `${acc}%`;
       } else {
-        // 2-Player UI
         document.getElementById('memory-match-p1-score').innerText = `${memoryMatch2PScores[1]} pts`;
         document.getElementById('memory-match-p1-moves').innerText = `${memoryMatch2PMoves[1]} moves`;
 
@@ -4588,14 +4762,13 @@
       const winTitle = document.getElementById('winner-text');
       const winSub = document.getElementById('winner-subtext');
       const changeModeBtn = document.getElementById('winner-change-mode-btn');
-      if (changeModeBtn) changeModeBtn.style.display = 'flex';
+      if (changeModeBtn) changeModeBtn.style.display = 'block';
 
       if (memoryMatchMode === 'single') {
         const acc = Math.min(100, Math.round((memoryMatchMatchedCount / memoryMatchMoves) * 100));
         winTitle.innerText = "🎉 Super Brain! You Won!";
         winSub.innerText = `Total Moves: ${memoryMatchMoves} | Time: ${totalTimeStr} | Accuracy: ${acc}%`;
       } else {
-        // 2-Player Match Evaluation
         const p1Score = memoryMatch2PScores[1];
         const p2Score = memoryMatch2PScores[2];
 
